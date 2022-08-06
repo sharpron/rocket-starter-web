@@ -1,0 +1,68 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css'
+import { DEFAULT_LAYOUT, LOGING_ROUTE_PATH } from './constants'
+import setupUserLoginInfoGuard from './permission'
+import { addRouteEmitter } from './route-listener'
+
+NProgress.configure({ showSpinner: false }) // NProgress Configuration
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: LOGING_ROUTE_PATH,
+      name: 'login',
+      component: () => import('@/views/login/index.vue')
+    },
+
+    {
+      path: '/',
+      name: 'Dashboard',
+      component: DEFAULT_LAYOUT,
+      children: []
+    },
+
+    {
+      path: '/system',
+      name: 'System',
+      component: DEFAULT_LAYOUT,
+      children: [
+        {
+          path: 'menu',
+          name: 'Menu',
+          component: () => import('@/views/system/menu/index.vue')
+        },
+        {
+          path: 'dept',
+          name: 'Dept',
+          component: () => import('@/views/system/dept/index.vue')
+        },
+        {
+          path: 'user',
+          name: 'User',
+          component: () => import('@/views/system/user/index.vue')
+        },
+        {
+          path: 'role',
+          name: 'Role',
+          component: () => import('@/views/system/role/index.vue')
+        }
+      ]
+    },
+
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import('@/views/not-found/index.vue')
+    }
+  ]
+})
+
+router.beforeEach(async (to) => {
+  addRouteEmitter(to)
+})
+
+setupUserLoginInfoGuard(router)
+
+export default router

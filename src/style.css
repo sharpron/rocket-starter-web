@@ -1,0 +1,7 @@
+#app {
+  height: 100vh;
+}
+
+body[arco-theme='dark'] {
+  --color-fill-1: 'black';
+}
