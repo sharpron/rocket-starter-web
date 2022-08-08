@@ -13,6 +13,7 @@
               <a-form-item field="username" label="用户名">
                 <a-input
                   v-model="crud.query.username"
+                  allow-clear
                   placeholder="输入用户名查询"
                 />
               </a-form-item>
@@ -21,6 +22,7 @@
               <a-form-item field="nickname" label="昵称">
                 <a-input
                   v-model="crud.query.nickname"
+                  allow-clear
                   placeholder="输入昵称查询"
                 />
               </a-form-item>
@@ -29,6 +31,7 @@
               <a-form-item field="mobile" label="号码">
                 <a-input
                   v-model="crud.query.mobile"
+                  allow-clear
                   placeholder="输入号码查询"
                 />
               </a-form-item>
@@ -37,15 +40,17 @@
               <a-form-item field="email" label="邮箱">
                 <a-input
                   v-model="crud.query.email"
+                  allow-clear
                   placeholder="输入邮箱查询"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item field="deptId" label="部门">
-                <a-input
-                  v-model="crud.query.deptId"
-                  placeholder="输入部门查询"
+                <dept-select
+                  v-model="crud.query.deptIds"
+                  placeholder="选择部门查询"
+                  multiple
                 />
               </a-form-item>
             </a-col>
@@ -132,6 +137,22 @@
             <a-tag v-else color="green">正常</a-tag>
           </template>
         </a-table-column>
+
+        <a-table-column title="修改时间" data-index="modifyTime">
+          <template #cell="{ record }">
+            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
+          </template>
+        </a-table-column>
+
+        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
+
+        <a-table-column title="创建时间" data-index="createTime">
+          <template #cell="{ record }">
+            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
+          </template>
+        </a-table-column>
+
+        <a-table-column title="创建人" data-index="createBy" :width="80" />
 
         <a-table-column
           title="操作"
@@ -221,10 +242,14 @@
 <script>
 import useCrud from '@/components/crud'
 import { modifyPass as modifyPassApi } from '@/api/system/user'
-import { computed, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
+import DeptSelect from '../dept/dept-select.vue'
 export default {
   name: 'MenuPage',
+  components: {
+    DeptSelect
+  },
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/users',
@@ -292,16 +317,3 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
-.container {
-  padding: 0 20px 20px 20px;
-}
-
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>

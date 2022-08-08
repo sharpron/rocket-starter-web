@@ -1,5 +1,57 @@
 <template>
   <a-card :bordered="false">
+    <a-row>
+      <a-col :flex="1">
+        <a-form
+          :model="crud.query"
+          :label-col-props="{ span: 6 }"
+          :wrapper-col-props="{ span: 18 }"
+          label-align="left"
+        >
+          <a-row :gutter="16">
+            <a-col :span="8">
+              <a-form-item field="name" label="名称">
+                <a-input
+                  allow-clear
+                  v-model="crud.query.name"
+                  placeholder="输入名称查询"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="disabled" label="状态">
+                <a-select
+                  allow-clear
+                  v-model="crud.query.disabled"
+                  placeholder="选择状态查询"
+                >
+                  <a-option value="true">禁用</a-option>
+                  <a-option value="false">正常</a-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-col>
+      <a-divider style="height: 32px" direction="vertical" />
+      <a-col :flex="'180px'" style="text-align: right">
+        <a-space :size="18">
+          <a-button type="primary" @click="crud.refreshData">
+            <template #icon>
+              <icon-search />
+            </template>
+            搜索
+          </a-button>
+          <a-button @click="crud.resetQuery">
+            <template #icon>
+              <icon-refresh />
+            </template>
+            重置
+          </a-button>
+        </a-space>
+      </a-col>
+    </a-row>
+    <a-divider style="margin-top: 0" />
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
@@ -46,7 +98,28 @@
     >
       <template #columns>
         <a-table-column title="名称" data-index="name" />
+        <a-table-column title="状态" width="150" data-index="hide">
+          <template #cell="{ record }">
+            <a-tag v-if="record.disabled">禁用</a-tag>
+            <a-tag v-else color="green">正常</a-tag>
+          </template>
+        </a-table-column>
         <a-table-column title="序号" data-index="orderNo" />
+        <a-table-column title="修改时间" data-index="modifyTime">
+          <template #cell="{ record }">
+            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
+          </template>
+        </a-table-column>
+
+        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
+
+        <a-table-column title="创建时间" data-index="createTime">
+          <template #cell="{ record }">
+            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
+          </template>
+        </a-table-column>
+
+        <a-table-column title="创建人" data-index="createBy" :width="80" />
 
         <a-table-column
           title="操作"
@@ -126,17 +199,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="less">
-.container {
-  padding: 0 20px 20px 20px;
-}
-
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>

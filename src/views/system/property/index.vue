@@ -10,24 +10,21 @@
         >
           <a-row :gutter="16">
             <a-col :span="8">
-              <a-form-item field="name" label="名称">
+              <a-form-item field="referenceKey" label="引用键">
                 <a-input
-                  v-model="crud.query.name"
+                  v-model="crud.query.referenceKey"
                   allow-clear
-                  placeholder="输入名称查询"
+                  placeholder="输入引用键查询"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item field="disabled" label="状态">
-                <a-select
-                  v-model="crud.query.disabled"
+              <a-form-item field="value" label="配置值">
+                <a-input
+                  v-model="crud.query.value"
                   allow-clear
-                  placeholder="选择状态查询"
-                >
-                  <a-option value="true">禁用</a-option>
-                  <a-option value="false">正常</a-option>
-                </a-select>
+                  placeholder="输入配置值查询"
+                />
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -105,11 +102,14 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="名称" data-index="name" />
-        <a-table-column title="状态" width="150" data-index="hide">
+        <a-table-column title="访问键" data-index="referenceKey" />
+        <a-table-column title="配置值" data-index="value" />
+
+        <a-table-column title="类型" data-index="valueType">
           <template #cell="{ record }">
-            <a-tag v-if="record.disabled">禁用</a-tag>
-            <a-tag v-else color="green">正常</a-tag>
+            <a-tag :color="colors[record.valueType]">{{
+              types[record.valueType]
+            }}</a-tag>
           </template>
         </a-table-column>
         <a-table-column title="描述" data-index="description" />
@@ -160,38 +160,28 @@
     :on-before-ok="crud.save"
   >
     <a-form ref="formComponent" :model="crud.form" :rules="formRules">
-      <a-form-item field="name" label="名称">
-        <a-input v-model="crud.form.name" placeholder="请输入标题" />
+      <a-form-item field="referenceKey" label="访问键">
+        <a-input v-model="crud.form.referenceKey" placeholder="请输入访问键" />
       </a-form-item>
-      <a-form-item field="disabled" label="禁用">
-        <a-switch v-model="crud.form.disabled" />
-      </a-form-item>
-
-      <a-form-item field="menuIds" label="管理部门">
-        <dept-select
-          v-model="crud.form.deptIds"
-          placeholder="请选择管理部门"
-          multiple
-        />
-      </a-form-item>
-      <a-form-item field="menuIds" label="菜单">
-        <a-tree
-          :checkable="true"
-          v-model:checked-keys="crud.form.menuIds"
-          :check-strictly="checkStrictly"
-          :data="menuDicts"
-          :field-names="{
-            key: 'id',
-            title: 'title',
-            children: 'children'
-          }"
-        />
+      <a-form-item field="valueType" label="值类型">
+        <a-radio-group v-model="crud.form.valueType" type="button">
+          <a-radio value="STR">字符串</a-radio>
+          <a-radio value="NUMBER">数字</a-radio>
+        </a-radio-group>
       </a-form-item>
 
+      <a-form-item field="value" label="配置值">
+        <a-input-number
+          v-if="crud.form.valueType === 'NUMBER'"
+          v-model="crud.form.value"
+          placeholder="请输入配置值"
+        />
+        <a-input v-else v-model="crud.form.value" placeholder="请输入配置值" />
+      </a-form-item>
       <a-form-item field="description" label="描述">
         <a-textarea
           v-model="crud.form.description"
-          placeholder="请输入描述信息"
+          placeholder="输入描述信息"
         />
       </a-form-item>
     </a-form>
@@ -200,39 +190,46 @@
 
 <script>
 import useCrud from '@/components/crud'
-import { onMounted, ref } from 'vue'
-import { getMenuDicts } from '@/api/system/menu'
-import DeptSelect from '../dept/dept-select.vue'
-
 export default {
-  name: 'Role',
-  components: { DeptSelect },
+  name: 'Menu',
   setup() {
     const { crud, formComponent } = useCrud({
-      uri: '/api/roles',
-      title: '角色'
+      uri: '/api/properties',
+      title: '系统属性',
+      defaultForm: {
+        valueType: 'STR'
+      }
     })
 
-    const formRules = ref({
-      name: [
-        { required: true, message: '缺少名称' },
+    const colors = {
+      STR: 'green',
+      NUMBER: 'red'
+    }
+    const types = {
+      STR: '字符串',
+      NUMBER: '数字'
+    }
+
+    const formRules = {
+      referenceKey: [
+        { required: true, message: '缺少键' },
         { minLength: 2, maxLength: 255, message: '长度位2个字符到255之间' }
       ],
-      description: [{ maxLength: 255, message: '最多255个字符' }]
-    })
-
-    const menuDicts = ref([])
-    onMounted(() => {
-      getMenuDicts().then((res) => {
-        menuDicts.value = res.data
-      })
-    })
+      valueType: [{ required: true, message: '缺少值类型' }],
+      value: [
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
+      ],
+      description: [
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
+      ]
+    }
 
     return {
       crud,
+      colors,
+      types,
       formRules,
-      formComponent,
-      menuDicts
+      formComponent
     }
   }
 }

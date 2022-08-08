@@ -1,68 +1,5 @@
 <template>
   <a-card :bordered="false">
-    <a-row>
-      <a-col :flex="1">
-        <a-form
-          :model="crud.query"
-          :label-col-props="{ span: 6 }"
-          :wrapper-col-props="{ span: 18 }"
-          label-align="left"
-        >
-          <a-row :gutter="16">
-            <a-col :span="8">
-              <a-form-item field="title" label="标题">
-                <a-input
-                  v-model="crud.query.title"
-                  allow-clear
-                  placeholder="输入标题查询"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :span="8">
-              <a-form-item field="type" label="类型">
-                <a-select
-                  v-model="crud.form.type"
-                  allow-clear
-                  placeholder="选择类型查询"
-                >
-                  <a-option value="CATEGORY">{{ types.CATEGORY }}</a-option>
-                  <a-option value="MENU">{{ types.MENU }}</a-option>
-                  <a-option value="LINK">{{ types.LINK }}</a-option>
-                  <a-option value="BUTTON">{{ types.BUTTON }}</a-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :span="8">
-              <a-form-item field="path" label="路径">
-                <a-input
-                  v-model="crud.query.path"
-                  allow-clear
-                  placeholder="输入路径查询"
-                />
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </a-col>
-      <a-divider style="height: 32px" direction="vertical" />
-      <a-col :flex="'180px'" style="text-align: right">
-        <a-space :size="18">
-          <a-button type="primary" @click="crud.refreshData">
-            <template #icon>
-              <icon-search />
-            </template>
-            搜索
-          </a-button>
-          <a-button @click="crud.resetQuery">
-            <template #icon>
-              <icon-refresh />
-            </template>
-            重置
-          </a-button>
-        </a-space>
-      </a-col>
-    </a-row>
-    <a-divider style="margin-top: 0" />
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
@@ -107,8 +44,8 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="标题" data-index="title" :width="140" />
-        <a-table-column title="图标" data-index="icon" tooltip ellipsis>
+        <a-table-column title="标题" data-index="title" />
+        <a-table-column title="图标" data-index="icon">
           <template #cell="{ record }">
             <component :is="record.icon" />
             {{ record.icon }}
@@ -136,19 +73,10 @@
         </a-table-column>
         <a-table-column title="权限" data-index="perm" />
 
-        <a-table-column title="创建时间" data-index="createTime" :width="120">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
-
         <a-table-column
           title="操作"
           align="center"
-          fixed="right"
-          :width="140"
+          :width="120"
           data-index="operations"
         >
           <template #cell="{ record }">
@@ -205,14 +133,10 @@
       <a-form-item field="perm" label="权限">
         <a-input v-model="crud.form.perm" placeholder="请输入权限" />
       </a-form-item>
-      <a-form-item
-        v-if="crud.form.type === 'MENU'"
-        field="cacheable"
-        label="缓存"
-      >
+      <a-form-item field="cacheable" label="缓存">
         <a-switch v-model="crud.form.cacheable" />
       </a-form-item>
-      <a-form-item v-if="crud.form.type !== 'BUTTON'" field="hide" label="隐藏">
+      <a-form-item field="hide" label="隐藏">
         <a-switch v-model="crud.form.hide" />
       </a-form-item>
     </a-form>

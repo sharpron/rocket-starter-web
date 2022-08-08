@@ -43,7 +43,7 @@ export default function useCrudApi(uri) {
     return axios.request({
       url: uri,
       method: 'delete',
-      params: { ids: ids.join(',') }
+      params: { ids }
     })
   }
 

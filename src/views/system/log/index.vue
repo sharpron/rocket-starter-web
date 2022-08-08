@@ -13,18 +13,20 @@
               <a-form-item field="description" label="内容">
                 <a-input
                   v-model="crud.query.description"
+                  allow-clear
                   placeholder="输入用户名查询"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item field="spendTime" label="时间">
-                <number-range v-model="crud.query.spendTime" />
+                <number-range v-model="crud.query.spendTime" allow-clear />
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item field="status" label="状态">
                 <a-select
+                  allow-clear
                   v-model="crud.query.status"
                   placeholder="选择状态进行查询"
                 >
@@ -36,6 +38,7 @@
             <a-col :span="8">
               <a-form-item field="clientIp" label="客户端IP">
                 <a-input
+                  allow-clear
                   v-model="crud.query.clientIp"
                   placeholder="输入客户端IP地址查询"
                 />
@@ -45,6 +48,7 @@
               <a-form-item field="clientRegion" label="位置">
                 <a-input
                   v-model="crud.query.clientRegion"
+                  allow-clear
                   placeholder="输入位置查询"
                 />
               </a-form-item>
@@ -53,6 +57,7 @@
               <a-form-item field="userAgent" label="浏览器">
                 <a-input
                   v-model="crud.query.userAgent"
+                  allow-clear
                   placeholder="输入浏览器信息查询"
                 />
               </a-form-item>

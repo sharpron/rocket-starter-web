@@ -2,6 +2,7 @@
   <a-input-group>
     <a-input
       v-model="start"
+      :allow-clear="allowClear"
       @update:model-value="change"
       placeholder="最小值"
     />
@@ -17,13 +18,17 @@ export default {
     modelValue: {
       type: Array,
       default: () => [null, null]
+    },
+    allowClear: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:model-value'],
   setup(props, context) {
     const start = ref(props.modelValue[0])
     const end = ref(props.modelValue[1])
-    const change = (val) => {
+    const change = () => {
       context.emit('update:model-value', [start.value, end.value])
     }
 

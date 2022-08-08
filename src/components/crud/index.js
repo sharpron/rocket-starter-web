@@ -2,6 +2,7 @@ import { computed, onMounted, reactive, ref, readonly, toRef, unref } from 'vue'
 import useCrudApi from '@/api/crud'
 import { downloadFile } from '@/utils/file'
 import { Message, Modal } from '@arco-design/web-vue'
+import { parseTime } from '@/utils/time'
 
 const DEFAULT_PAGE = 1
 
@@ -75,7 +76,7 @@ export default function useCrud(options) {
   const exportData = () => {
     exportLoading.value = true
     crudApi.exportData(pageable.value, query.value).then((res) => {
-      downloadFile(res, options.title, 'xlsx')
+      downloadFile(res.data, options.title, 'xlsx')
     }).finally(() => {
       exportLoading.value = false
     })
@@ -95,7 +96,7 @@ export default function useCrud(options) {
   })
 
   const editTitle = computed(() => {
-    return options.title + saveMode.value
+    return saveMode.value + options.title
   })
 
   const openAdd = () => {
@@ -156,7 +157,7 @@ export default function useCrud(options) {
   const batchDelete = () => {
     Modal.warning({
       title: '系统提示',
-      content: '您正在删除多条数据，删除后不可恢复！是否确认?',
+      content: `您将要删除${selectedKeys.value.length}条数据，删除后不可恢复！是否确认?`,
       hideCancel: false,
       onOk() {
         deleteByIds(selectedKeys.value)
@@ -194,7 +195,8 @@ export default function useCrud(options) {
       openAdd,
       openEdit,
       selectedKeys,
-      batchDelete
+      batchDelete,
+      parseTime
     }),
     formComponent
   }

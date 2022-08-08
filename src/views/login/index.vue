@@ -3,35 +3,74 @@
     <div class="login-form-wrapper">
       <div class="login-form-title">账号密码登录</div>
       <a-divider orientation="left"></a-divider>
-      <a-form ref="loginForm" :model="userInfo" class="login-form" layout="vertical" @submit="handleSubmit">
-        <a-form-item field="username" :rules="[{ required: true, message: '账号不能为空' }]"
-          :validate-trigger="['change', 'blur']" hide-label>
-          <a-input v-model="userInfo.username" autocomplete="username" placeholder="账号：">
+      <a-form
+        ref="loginForm"
+        :model="userInfo"
+        class="login-form"
+        layout="vertical"
+        @submit="handleSubmit"
+      >
+        <a-form-item
+          field="username"
+          :rules="[{ required: true, message: '账号不能为空' }]"
+          :validate-trigger="['change', 'blur']"
+          hide-label
+        >
+          <a-input
+            v-model="userInfo.username"
+            autocomplete="username"
+            placeholder="账号："
+          >
             <template #prefix>
               <icon-user />
             </template>
           </a-input>
         </a-form-item>
-        <a-form-item field="password" :rules="[{ required: true, message: '密码不能为空' }]"
-          :validate-trigger="['change', 'blur']" hide-label>
-          <a-input-password v-model="userInfo.password" autocomplete="current-password" placeholder="密码：" allow-clear>
+        <a-form-item
+          field="password"
+          :rules="[{ required: true, message: '密码不能为空' }]"
+          :validate-trigger="['change', 'blur']"
+          hide-label
+        >
+          <a-input-password
+            v-model="userInfo.password"
+            autocomplete="current-password"
+            placeholder="密码："
+            allow-clear
+          >
             <template #prefix>
               <icon-lock />
             </template>
           </a-input-password>
         </a-form-item>
-        <a-form-item field="captcha" :rules="[{ required: true, message: '验证码不能为空' }]"
-          :validate-trigger="['change', 'blur']" hide-label>
-          <a-input v-model="userInfo.captcha" placeholder="验证码：" allow-clear>
+        <a-form-item
+          field="captcha"
+          :rules="[{ required: true, message: '验证码不能为空' }]"
+          :validate-trigger="['change', 'blur']"
+          hide-label
+        >
+          <a-input
+            v-model="userInfo.captcha"
+            placeholder="验证码："
+            allow-clear
+          >
             <template #prefix>
               <icon-lock />
             </template>
           </a-input>
-          <img class="captcha" alt="验证码" :src="captcha.codeUrl" @click="loadCaptcha" />
+          <img
+            class="captcha"
+            alt="验证码"
+            :src="captcha.codeUrl"
+            @click="loadCaptcha"
+          />
         </a-form-item>
         <a-space :size="16" direction="vertical">
           <div class="login-form-password-actions">
-            <a-checkbox v-model="userInfo.rememberMe" @change="setRememberPassword;">
+            <a-checkbox
+              v-model="userInfo.rememberMe"
+              @change="setRememberPassword;"
+            >
               记住我
             </a-checkbox>
           </div>
@@ -78,10 +117,16 @@ export default {
         return
       }
       loading.value = true
-      await userStore.login({
-        ...values,
-        captchaKey: captcha.value.captchaKey
-      })
+
+      try {
+        await userStore.login({
+          ...values,
+          captchaKey: captcha.value.captchaKey
+        })
+      } catch (err) {
+        loading.value = false
+        return
+      }
 
       const { redirect, ...othersQuery } = router.currentRoute.value.query
 
