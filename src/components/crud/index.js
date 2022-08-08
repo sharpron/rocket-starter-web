@@ -1,7 +1,7 @@
 import { computed, onMounted, reactive, ref, readonly, toRef, unref } from 'vue'
 import useCrudApi from '@/api/crud'
 import { downloadFile } from '@/utils/file'
-import { Message } from '@arco-design/web-vue'
+import { Message, Modal } from '@arco-design/web-vue'
 
 const DEFAULT_PAGE = 1
 
@@ -22,15 +22,15 @@ export default function useCrud(options) {
 
   const dataLoading = ref(false)
 
-  const getPageable = () => ({
+  const pageable = computed(() => ({
     page: pagination.current - 1,
     size: pagination.pageSize
-  })
+  }))
 
   const loadData = () => {
     dataLoading.value = true
     crudApi
-      .find(getPageable(), query.value)
+      .find(pageable.value, query.value)
       .then((res) => {
         const serverData = res.data
         if (Array.isArray(serverData)) {
@@ -71,9 +71,13 @@ export default function useCrud(options) {
     refreshData()
   }
 
+  const exportLoading = ref(false)
   const exportData = () => {
-    crudApi.exportData(getPageable(), query.value).then((res) => {
+    exportLoading.value = true
+    crudApi.exportData(pageable.value, query.value).then((res) => {
       downloadFile(res, options.title, 'xlsx')
+    }).finally(() => {
+      exportLoading.value = false
     })
   }
 
@@ -117,7 +121,13 @@ export default function useCrud(options) {
           Message.success(options.title + saveMode.value + '成功')
           saveLoading.value = false
           done(true)
-          refreshData()
+          // 编辑模式直接刷新当页
+          if (isEdit.value) {
+            loadData()
+          } else {
+            refreshData()
+          }
+
         })
         .catch(() => {
           saveLoading.value = false
@@ -133,12 +143,27 @@ export default function useCrud(options) {
       .deleteByIds(ids)
       .then(() => {
         Message.success(options.title + '删除成功')
+        // 重新加载当页数据
+        loadData()
         deleteLoading.value = false
       })
       .catch(() => {
         saveLoading.value = false
       })
   }
+
+  const selectedKeys = ref([])
+  const batchDelete = () => {
+    Modal.warning({
+      title: '系统提示',
+      content: '您正在删除多条数据，删除后不可恢复！是否确认?',
+      hideCancel: false,
+      onOk() {
+        deleteByIds(selectedKeys.value)
+      }
+    });
+  }
+
 
   const rowSelection = reactive({
     type: 'checkbox',
@@ -156,6 +181,7 @@ export default function useCrud(options) {
       refreshData,
       onPageChange,
       onPageSizeChange,
+      exportLoading,
       exportData,
       saveLoading,
       saveMode,
@@ -167,13 +193,9 @@ export default function useCrud(options) {
       editDialog,
       openAdd,
       openEdit,
+      selectedKeys,
+      batchDelete
     }),
     formComponent
   }
-}
-
-
-export function useTest() {
-  const formComponent = ref()
-  return reactive(formComponent)
 }

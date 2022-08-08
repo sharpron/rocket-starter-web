@@ -4,7 +4,7 @@
     v-model:collapsed="collapsed"
     @update:collapsed="onCollapsed"
     show-collapse-button
-    :default-selected-keys="defaultSelectedKeys"
+    :selected-keys="defaultSelectedKeys"
     auto-open-selected
     :level-indent="20"
     breakpoint="xl"

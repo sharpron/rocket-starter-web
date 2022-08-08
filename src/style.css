@@ -1,5 +1,11 @@
+html,
+body {
+  overflow: hidden;
+}
+
 #app {
   height: 100vh;
+  overflow: hidden;
 }
 
 body[arco-theme='dark'] {

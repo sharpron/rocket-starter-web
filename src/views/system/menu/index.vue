@@ -9,26 +9,34 @@
             </template>
             新增
           </a-button>
-          <a-button type="primary" status="danger">
+          <a-button
+            type="primary"
+            status="danger"
+            :disabled="crud.selectedKeys.length === 0"
+            :loading="crud.deleteLoading"
+            @click="crud.batchDelete"
+          >
             <template #icon>
               <icon-minus />
             </template>
             删除
           </a-button>
-          <a-button>
-            <template #icon>
-              <icon-download />
-            </template>
-            导出
-          </a-button>
         </a-space>
       </a-col>
-      <a-col :span="8" style="text-align: right"> </a-col>
+      <a-col :span="8" style="text-align: right">
+        <a-button @click="crud.exportData" :loading="crud.exportLoading">
+          <template #icon>
+            <icon-download />
+          </template>
+          导出
+        </a-button>
+      </a-col>
     </a-row>
     <a-table
       row-key="id"
       :loading="crud.dataLoading"
       :pagination="crud.pagination"
+      v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
       :bordered="false"
       @page-change="crud.onPageChange"
@@ -37,7 +45,13 @@
     >
       <template #columns>
         <a-table-column title="标题" data-index="title" />
-        <a-table-column title="图标" data-index="icon" />
+        <a-table-column title="图标" data-index="icon">
+          <template #cell="{ record }">
+            <component :is="record.icon" />
+            {{ record.icon }}
+          </template>
+        </a-table-column>
+
         <a-table-column title="序号" data-index="orderNo" />
         <a-table-column title="类型" data-index="type">
           <template #cell="{ record }">
@@ -62,19 +76,19 @@
         <a-table-column
           title="操作"
           align="center"
-          width="200"
+          :width="120"
           data-index="operations"
         >
           <template #cell="{ record }">
-            <a-button type="text" size="small" @click="crud.openEdit(record)">
-              修改
-            </a-button>
-            <a-popconfirm
-              content="确认删除该项?"
-              @ok="crud.deleteByIds([record.id])"
-            >
-              <a-button type="text" size="small"> 删除 </a-button>
-            </a-popconfirm>
+            <a-space>
+              <a-button @click="crud.openEdit(record)"> 修改 </a-button>
+              <a-popconfirm
+                content="确认删除该项?"
+                @ok="crud.deleteByIds([record.id])"
+              >
+                <a-button status="danger"> 删除 </a-button>
+              </a-popconfirm>
+            </a-space>
           </template>
         </a-table-column>
       </template>
@@ -94,9 +108,9 @@
       <a-form-item field="parentId" label="上级">
         <a-tree-select
           v-model="crud.form.parentId"
-          :data="crud.data"
+          :data="formMenus"
           placeholder="请选择上级菜单"
-        ></a-tree-select>
+        />
       </a-form-item>
 
       <a-form-item field="icon" label="图标">
@@ -114,7 +128,7 @@
         </a-select>
       </a-form-item>
       <a-form-item v-if="requiredPath" field="path" label="路径">
-        <a-input-number v-model="crud.form.path" placeholder="请输入路径" />
+        <a-input v-model="crud.form.path" placeholder="请输入路径" />
       </a-form-item>
       <a-form-item field="perm" label="权限">
         <a-input v-model="crud.form.perm" placeholder="请输入权限" />
@@ -130,8 +144,8 @@
 </template>
 
 <script>
-import useCrud, { useTest } from '@/components/crud'
-import { computed, ref, reactive } from 'vue'
+import useCrud from '@/components/crud'
+import { computed, ref, h } from 'vue'
 export default {
   name: 'Menu',
   setup() {
@@ -177,13 +191,36 @@ export default {
       ]
     })
 
+    const formMenus = computed(() => {
+      const rebuild = (data, collector) => {
+        for (const item of data) {
+          const node = {
+            key: item.id,
+            title: item.title,
+            children: [],
+            disabled: ['BUTTON', 'LINK'].includes(item.type),
+            icon: () => h(item.icon)
+          }
+          collector.push(node)
+          if (item.children && item.children.length) {
+            rebuild(item.children, node.children)
+          }
+        }
+      }
+
+      const result = []
+      rebuild(crud.data, result)
+      return result
+    })
+
     return {
       crud,
       colors,
       types,
       formRules,
       requiredPath,
-      formComponent
+      formComponent,
+      formMenus
     }
   }
 }

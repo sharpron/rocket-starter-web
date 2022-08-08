@@ -18,9 +18,10 @@ const router = createRouter({
 
     {
       path: '/',
-      name: 'Dashboard',
+      name: 'Home',
       component: DEFAULT_LAYOUT,
-      children: []
+      children: [],
+      meta: { title: '主页' }
     },
 
     {
@@ -47,6 +48,11 @@ const router = createRouter({
           path: 'role',
           name: 'Role',
           component: () => import('@/views/system/role/index.vue')
+        },
+        {
+          path: 'log',
+          name: 'Log',
+          component: () => import('@/views/system/log/index.vue')
         }
       ]
     },

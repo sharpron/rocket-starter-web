@@ -3,12 +3,15 @@ import { defineStore } from 'pinia'
 
 const createTag = (route, meta) => {
   const { name, fullPath, query } = route
+
+  const finalMeta = meta || route.meta
+
   return {
-    title: meta.title,
+    title: finalMeta.title,
     name: String(name),
     fullPath,
     query,
-    cacheable: meta.cacheable
+    cacheable: finalMeta.cacheable
   }
 }
 
@@ -30,7 +33,7 @@ const useTabBarStore = defineStore('tabBar', {
   actions: {
     updateTabList(route) {
       const userStore = useUserStore()
-      const meta = userStore.appMenuMetas[route.fullPath]
+      const meta = userStore.appMenuMetas[route.fullPath] || route.meta
       this.tags.push(createTag(route, meta))
       if (meta.cacheable) {
         this.caches.add(route.name)

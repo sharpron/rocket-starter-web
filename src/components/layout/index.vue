@@ -14,7 +14,7 @@
 
         <a-layout-content class="layout-content">
           <router-view v-slot="{ Component, route }">
-            <transition name="fade" mode="out-in" appear>
+            <transition name="slide" appear>
               <keep-alive :include="cacheList">
                 <div
                   class="main-content"

@@ -13,7 +13,7 @@ export default function useCrudApi(uri) {
   }
   const exportData = (pageable, query) => {
     return axios.request({
-      url: uri + '/excel',
+      url: uri + '/excels',
       method: 'get',
       responseType: 'blob',
       params: {

@@ -80,7 +80,13 @@
             </template>
             新增
           </a-button>
-          <a-button status="danger">
+          <a-button
+            type="primary"
+            status="danger"
+            :disabled="crud.selectedKeys.length === 0"
+            :loading="crud.deleteLoading"
+            @click="crud.batchDelete"
+          >
             <template #icon>
               <icon-minus />
             </template>
@@ -89,7 +95,7 @@
         </a-space>
       </a-col>
       <a-col :span="8" style="text-align: right">
-        <a-button>
+        <a-button @click="crud.exportData" :loading="crud.exportLoading">
           <template #icon>
             <icon-download />
           </template>
@@ -101,6 +107,7 @@
       row-key="id"
       :loading="crud.dataLoading"
       :pagination="crud.pagination"
+      v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
       :bordered="false"
       @page-change="crud.onPageChange"

@@ -4,7 +4,7 @@ import {
   logout as userLogout,
   getUserInfo
 } from '@/api/system/auth'
-import { getSelfMenus } from '@/api/menu'
+import { getSelfMenus } from '@/api/system/menu'
 
 
 /**

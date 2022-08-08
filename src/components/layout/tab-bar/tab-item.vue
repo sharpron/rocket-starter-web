@@ -50,7 +50,6 @@ import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useTabBarStore from '@/store/tab-bar'
 
-// eslint-disable-next-line no-shadow
 const Eaction = {
   current: 'current',
   left: 'left',
@@ -148,7 +147,8 @@ export default {
       disabledLeft,
       disabledRight,
       actionSelect,
-      Eaction
+      Eaction,
+      tagClose
     }
   }
 }
