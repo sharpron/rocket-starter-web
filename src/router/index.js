@@ -58,6 +58,16 @@ const router = createRouter({
           path: 'property',
           name: 'Property',
           component: () => import('@/views/system/property/index.vue')
+        },
+        {
+          path: 'job',
+          name: 'Job',
+          component: () => import('@/views/system/job/index.vue')
+        },
+        {
+          path: 'dict',
+          name: 'Dict',
+          component: () => import('@/views/system/dict/index.vue')
         }
       ]
     },

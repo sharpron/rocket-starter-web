@@ -10,21 +10,24 @@
         >
           <a-row :gutter="16">
             <a-col :span="8">
-              <a-form-item field="referenceKey" label="引用键">
+              <a-form-item field="name" label="任务名称">
                 <a-input
-                  v-model="crud.query.referenceKey"
+                  v-model="crud.query.name"
                   allow-clear
-                  placeholder="输入引用键查询"
+                  placeholder="输入任务名称查询"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item field="value" label="配置值">
-                <a-input
-                  v-model="crud.query.value"
+              <a-form-item field="enabled" label="状态">
+                <a-select
+                  v-model="crud.query.enabled"
                   allow-clear
-                  placeholder="输入配置值查询"
-                />
+                  placeholder="选择状态查询"
+                >
+                  <a-option value="true">启用</a-option>
+                  <a-option value="false">未启用</a-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -102,17 +105,24 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="访问键" data-index="referenceKey" />
-        <a-table-column title="配置值" data-index="value" />
+        <a-table-column title="任务名称" data-index="name" />
+        <a-table-column title="运行BEAN" data-index="runnableBeanName" />
+        <a-table-column title="运行参数" data-index="params" />
+        <a-table-column title="执行时间(cron)" data-index="cronExpression" />
 
-        <a-table-column title="类型" data-index="valueType">
+        <a-table-column title="状态" :width="120" data-index="enabled">
           <template #cell="{ record }">
-            <a-tag :color="colors[record.valueType]">{{
-              types[record.valueType]
-            }}</a-tag>
+            <a-tag v-if="record.enabled" color="green">启用</a-tag>
+            <a-tag v-else>未启用</a-tag>
           </template>
         </a-table-column>
-        <a-table-column title="描述" data-index="description" />
+
+        <a-table-column
+          title="描述"
+          data-index="description"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column title="修改时间" data-index="modifyTime">
           <template #cell="{ record }">
@@ -132,14 +142,20 @@
 
         <a-table-column
           title="操作"
-          align="center"
-          :width="120"
           fixed="right"
+          :width="220"
+          align="center"
           data-index="operations"
         >
           <template #cell="{ record }">
             <a-space>
               <a-button @click="crud.openEdit(record)"> 修改 </a-button>
+              <a-button status="danger" @click="openModifyPass(record)">{{
+                record.enabled ? '禁用' : '启用'
+              }}</a-button>
+              <a-button status="danger" @click="openModifyPass(record)"
+                >立即执行</a-button
+              >
               <a-popconfirm
                 content="确认删除该项?"
                 @ok="crud.deleteByIds([record.id])"
@@ -160,28 +176,31 @@
     :on-before-ok="crud.save"
   >
     <a-form ref="formComponent" :model="crud.form" :rules="formRules">
-      <a-form-item field="referenceKey" label="访问键">
-        <a-input v-model="crud.form.referenceKey" placeholder="请输入访问键" />
+      <a-form-item field="name" label="任务名称">
+        <a-input v-model="crud.form.name" placeholder="请输入任务名称" />
       </a-form-item>
-      <a-form-item field="valueType" label="值类型">
-        <a-radio-group v-model="crud.form.valueType" type="button">
-          <a-radio value="STR">字符串</a-radio>
-          <a-radio value="NUMBER">数字</a-radio>
-        </a-radio-group>
-      </a-form-item>
-
-      <a-form-item field="value" label="配置值">
-        <a-input-number
-          v-if="crud.form.valueType === 'NUMBER'"
-          v-model="crud.form.value"
-          placeholder="请输入配置值"
+      <a-form-item field="runnableBeanName" label="BEAN">
+        <a-input
+          v-model="crud.form.runnableBeanName"
+          placeholder="请输入可运行BEAN"
         />
-        <a-input v-else v-model="crud.form.value" placeholder="请输入配置值" />
+      </a-form-item>
+      <a-form-item field="params" label="参数">
+        <a-input-number v-model="crud.form.params" placeholder="请输入参数" />
+      </a-form-item>
+      <a-form-item field="cronExpression" label="(cron)">
+        <a-input-number
+          v-model="crud.form.cronExpression"
+          placeholder="请输入cron表达式"
+        />
+      </a-form-item>
+      <a-form-item field="enabled" label="是否启用">
+        <a-switch v-model="crud.form.enabled" />
       </a-form-item>
       <a-form-item field="description" label="描述">
         <a-textarea
           v-model="crud.form.description"
-          placeholder="输入描述信息"
+          placeholder="这里输入描述信息"
         />
       </a-form-item>
     </a-form>
@@ -191,32 +210,22 @@
 <script>
 import useCrud from '@/components/crud'
 export default {
-  name: 'Menu',
+  name: 'JobPage',
   setup() {
     const { crud, formComponent } = useCrud({
-      uri: '/api/properties',
-      title: '系统属性',
-      defaultForm: {
-        valueType: 'STR'
-      }
+      uri: '/api/jobs',
+      title: '定时任务'
     })
 
-    const colors = {
-      STR: 'green',
-      NUMBER: 'red'
-    }
-    const types = {
-      STR: '字符串',
-      NUMBER: '数字'
-    }
-
     const formRules = {
-      referenceKey: [
-        { required: true, message: '缺少键' },
-        { minLength: 2, maxLength: 255, message: '长度位2个字符到255之间' }
+      name: [
+        { required: true, message: '缺少名称' },
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
-      valueType: [{ required: true, message: '缺少值类型' }],
-      value: [
+      runnableBeanName: [{ required: true, message: '缺少可运行BEAN' }],
+      params: [{ maxLength: 255, message: '长度在最大255之间' }],
+      cronExpression: [
+        { required: true, message: '缺少执行时机(cron)' },
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
       description: [
@@ -226,11 +235,10 @@ export default {
 
     return {
       crud,
-      colors,
-      types,
       formRules,
       formComponent
     }
   }
 }
 </script>
+

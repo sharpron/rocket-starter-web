@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false" style="min-height: 1000px">
+  <a-card :bordered="false" style="min-height: 100%">
     <a-row>
       <a-col :flex="1">
         <a-form
@@ -259,7 +259,7 @@ export default {
     const formRules = ref({
       username: [
         { required: true, message: '缺少用户名' },
-        { minLength: 2, maxLength: 255, message: '长度位2个字符到255之间' }
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
       orderNo: [{ required: true, message: '缺少序号' }],
       perm: [
@@ -276,7 +276,7 @@ export default {
       rules: {
         newPass: [
           { required: true, message: '缺少新密码' },
-          { minLength: 6, maxLength: 255, message: '长度位2个字符到255之间' }
+          { minLength: 6, maxLength: 255, message: '长度在2个字符到255之间' }
         ]
       },
       visible: false,

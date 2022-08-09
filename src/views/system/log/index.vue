@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card :bordered="false" style="min-height: 100%">
     <a-row>
       <a-col :flex="1">
         <a-form

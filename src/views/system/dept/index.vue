@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card :bordered="false" style="min-height: 100%">
     <a-row>
       <a-col :flex="1">
         <a-form
@@ -185,7 +185,7 @@ export default {
     const formRules = {
       name: [
         { required: true, message: '缺少名称' },
-        { minLength: 2, maxLength: 255, message: '长度位2个字符到255之间' }
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
       orderNo: [{ required: true, message: '缺少序号' }],
       parentId: [{ required: true, message: '缺少上级部门' }]
