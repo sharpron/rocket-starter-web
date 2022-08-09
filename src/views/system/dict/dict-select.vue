@@ -1,21 +1,13 @@
 <template>
-  <a-tree-select
-    v-model="value"
-    :data="deptDicts"
-    :placeholder="placeholder || '请选择管理部门'"
-    :field-names="{
-      key: 'id',
-      title: 'name',
-      children: 'children'
-    }"
-    @change="onChange"
-    :multiple="multiple"
-  />
+  <a-select v-model="value" @change="onChange" :placeholder="placeholder">
+    <a-option v-for="option in options" :key="option.id" :value="option.id">{{
+      option.name
+    }}</a-option>
+  </a-select>
 </template>
-
 <script>
-import { getDeptDicts } from '@/api/system/dept'
 import { onMounted, ref, toRef } from 'vue'
+import { getDictItemsAsDict } from '@/api/system/dict-item'
 export default {
   props: {
     modelValue: {
@@ -32,12 +24,12 @@ export default {
     }
   },
   emits: ['update:model-value'],
-  setup(props, context) {
-    const deptDicts = ref([])
+  setup() {
+    const options = ref([])
 
     onMounted(() => {
-      getDeptDicts().then((res) => {
-        deptDicts.value = res.data
+      getDictItemsAsDict().then((res) => {
+        options.value = res.data
       })
     })
 
@@ -48,7 +40,7 @@ export default {
     }
     return {
       value,
-      deptDicts,
+      options,
       onChange
     }
   }
