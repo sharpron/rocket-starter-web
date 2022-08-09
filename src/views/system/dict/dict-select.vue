@@ -14,6 +14,10 @@ export default {
       type: [Number, Array],
       required: true
     },
+    dictName: {
+      type: String,
+      required: true
+    },
     multiple: {
       type: Boolean,
       default: false
@@ -28,7 +32,7 @@ export default {
     const options = ref([])
 
     onMounted(() => {
-      getDictItemsAsDict().then((res) => {
+      getDictItemsAsDict({ dictName }).then((res) => {
         options.value = res.data
       })
     })
