@@ -24,7 +24,7 @@ export default {
     }
   },
   emits: ['update:model-value'],
-  setup() {
+  setup(props, context) {
     const options = ref([])
 
     onMounted(() => {
