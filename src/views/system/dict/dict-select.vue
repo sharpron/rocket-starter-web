@@ -32,7 +32,7 @@ export default {
     const options = ref([])
 
     onMounted(() => {
-      getDictItemsAsDict({ dictName }).then((res) => {
+      getDictItemsAsDict({ dictName: props.dictName }).then((res) => {
         options.value = res.data
       })
     })
