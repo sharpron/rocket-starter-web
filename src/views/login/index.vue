@@ -154,13 +154,15 @@ export default {
 .container {
   position: relative;
   background: var(--color-fill-1);
+  height: 100%;
 }
 
 .login-form-wrapper {
   background: var(--color-bg-1);
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .login-form-wrapper {

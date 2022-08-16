@@ -253,7 +253,8 @@ export default {
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/users',
-      title: '菜单'
+      title: '用户',
+      defaultSort: ['createTime,desc']
     })
 
     const formRules = ref({

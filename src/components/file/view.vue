@@ -1,5 +1,5 @@
 <template>
-  <a-link :href="link">{{ name }}</a-link>
+  <a-link :href="link" icon>{{ name }}</a-link>
 </template>
 
 <script>
@@ -15,10 +15,10 @@ export default {
   setup(props) {
     const doc = toRef(props, 'value')
     const link = computed(() => {
-      return '/api/files?path=' + doc.docPath
+      return '/api/files?path=' + doc.value.docPath
     })
     const name = computed(() => {
-      return doc.docName
+      return doc.value.docName
     })
     return {
       link,

@@ -18,14 +18,16 @@ export default function useCrud(options) {
     hideOnSinglePage: true,
     ...options.pagination
   })
-  const query = ref({})
+  const query = ref({ ...options.defaultQuery })
+  const sort = ref([...(options.defaultSort || [])])
   const data = ref([])
 
   const dataLoading = ref(false)
 
   const pageable = computed(() => ({
     page: pagination.current - 1,
-    size: pagination.pageSize
+    size: pagination.pageSize,
+    sort: sort.value
   }))
 
   const loadData = () => {
@@ -58,7 +60,7 @@ export default function useCrud(options) {
   })
 
   const resetQuery = () => {
-    query.value = {}
+    query.value = { ...options.defaultQuery }
     refreshData()
   }
 
@@ -187,6 +189,7 @@ export default function useCrud(options) {
       saveLoading,
       saveMode,
       save,
+      isEdit,
       deleteByIds,
       rowSelection,
       form,

@@ -198,7 +198,8 @@ export default {
       title: '系统属性',
       defaultForm: {
         valueType: 'STR'
-      }
+      },
+      defaultSort: ['createTime,desc']
     })
 
     const colors = {

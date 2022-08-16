@@ -106,14 +106,27 @@
     >
       <template #columns>
         <a-table-column title="名称" data-index="name" />
-        <a-table-column title="状态" width="150" data-index="hide">
+        <a-table-column title="状态" data-index="hide">
           <template #cell="{ record }">
             <a-tag v-if="record.disabled">禁用</a-tag>
             <a-tag v-else color="green">正常</a-tag>
           </template>
         </a-table-column>
+        <a-table-column title="部门" data-index="deptNames" :width="180">
+          <template #cell="{ record }">
+            <a-space>
+              <a-tag v-for="name in record.deptNames">{{ name }}</a-tag>
+            </a-space>
+          </template>
+        </a-table-column>
+        <a-table-column title="菜单" data-index="menuTitles" :width="180">
+          <template #cell="{ record }">
+            <a-space>
+              <a-tag v-for="title in record.menuTitles">{{ title }}</a-tag>
+            </a-space>
+          </template>
+        </a-table-column>
         <a-table-column title="描述" data-index="description" />
-
         <a-table-column title="修改时间" data-index="modifyTime">
           <template #cell="{ record }">
             {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
@@ -210,7 +223,8 @@ export default {
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/roles',
-      title: '角色'
+      title: '角色',
+      defaultSort: ['createTime,desc']
     })
 
     const formRules = ref({

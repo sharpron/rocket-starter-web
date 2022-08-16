@@ -61,7 +61,7 @@ export default {
 <style scoped lang="less">
 .layout {
   .menu {
-    height: 100%;
+    height: calc(100vh - 60px);
   }
 
   .layout-content {
@@ -70,22 +70,6 @@ export default {
       overflow: auto;
       padding: 30px 20px;
       box-sizing: border-box;
-    }
-
-    ::-webkit-scrollbar {
-      width: 15px;
-      height: 15px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      border: 4px solid transparent;
-      background-clip: padding-box;
-      border-radius: 7px;
-      background-color: var(--color-text-4);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: var(--color-text-3);
     }
   }
 

@@ -24,4 +24,10 @@ export default {
     font-size: 18px;
   }
 }
+.icon {
+  width: 20px;
+  margin-right: 16px;
+  color: var(--color-text-3);
+  vertical-align: middle;
+}
 </style>

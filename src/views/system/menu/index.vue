@@ -66,13 +66,18 @@
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
-          <a-button type="primary" @click="crud.openAdd">
+          <a-button
+            v-permission="'menu:create'"
+            type="primary"
+            @click="crud.openAdd"
+          >
             <template #icon>
               <icon-plus />
             </template>
             新增
           </a-button>
           <a-button
+            v-permission="'menu:remove'"
             type="primary"
             status="danger"
             :disabled="crud.selectedKeys.length === 0"
@@ -107,10 +112,19 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="标题" data-index="title" :width="140" />
+        <a-table-column
+          title="标题"
+          data-index="title"
+          :width="140"
+          tooltip
+          ellipsis
+        />
         <a-table-column title="图标" data-index="icon" tooltip ellipsis>
           <template #cell="{ record }">
-            <component :is="record.icon" />
+            <component
+              :is="record.icon"
+              style="width: 20px; vertical-align: middle"
+            />
             {{ record.icon }}
           </template>
         </a-table-column>
@@ -121,7 +135,13 @@
             <a-tag :color="colors[record.type]">{{ types[record.type] }}</a-tag>
           </template>
         </a-table-column>
-        <a-table-column title="路径" data-index="path" />
+        <a-table-column
+          title="路径"
+          data-index="path"
+          :width="120"
+          tooltip
+          ellipsis
+        />
         <a-table-column title="缓存" data-index="cacheable">
           <template #cell="{ record }">
             <a-tag color="green" v-if="record.cacheable">开启</a-tag>
@@ -134,7 +154,7 @@
             <a-tag v-else color="green">显示</a-tag>
           </template>
         </a-table-column>
-        <a-table-column title="权限" data-index="perm" />
+        <a-table-column title="权限" data-index="perm" tooltip ellipsis />
 
         <a-table-column title="创建时间" data-index="createTime" :width="120">
           <template #cell="{ record }">
@@ -148,17 +168,24 @@
           title="操作"
           align="center"
           fixed="right"
-          :width="140"
+          :width="150"
           data-index="operations"
         >
           <template #cell="{ record }">
             <a-space>
-              <a-button @click="crud.openEdit(record)"> 修改 </a-button>
+              <a-button
+                v-permission="'menu:modify'"
+                @click="crud.openEdit(record)"
+              >
+                修改
+              </a-button>
               <a-popconfirm
                 content="确认删除该项?"
                 @ok="crud.deleteByIds([record.id])"
               >
-                <a-button status="danger"> 删除 </a-button>
+                <a-button v-permission="'menu:remove'" status="danger">
+                  删除
+                </a-button>
               </a-popconfirm>
             </a-space>
           </template>
@@ -230,7 +257,8 @@ export default {
       title: '菜单',
       defaultForm: {
         type: 'CATEGORY'
-      }
+      },
+      defaultSort: ['orderNo, desc']
     })
 
     const colors = {

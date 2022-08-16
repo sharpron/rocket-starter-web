@@ -173,7 +173,8 @@ export default {
   setup() {
     const { crud } = useCrud({
       uri: '/api/logs',
-      title: '日志'
+      title: '日志',
+      defaultSort: ['createTime,desc']
     })
     return {
       crud,
