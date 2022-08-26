@@ -415,7 +415,7 @@ export default {
     const { crud, formComponent } = useCrud({
       uri: '/api/dictionaries',
       title: '字典',
-      defaultSort: ['createTime,desc']
+      defaultSort: ['id,desc']
     })
 
     const formRules = ref({

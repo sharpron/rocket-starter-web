@@ -21,7 +21,7 @@ const router = createRouter({
       name: 'Home',
       component: DEFAULT_LAYOUT,
       children: [],
-      meta: { title: '主页' }
+      meta: { title: '主页', affix: true }
     },
 
     {

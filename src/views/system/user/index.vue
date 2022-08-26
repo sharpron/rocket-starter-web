@@ -120,8 +120,8 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="用户名" data-index="username" />
-        <a-table-column title="昵称" data-index="nickname" />
+        <a-table-column title="用户名" data-index="username" :width="80" />
+        <a-table-column title="昵称" data-index="nickname" :width="120" />
         <a-table-column title="部门" data-index="deptName" />
 
         <a-table-column title="锁定状态" :width="120" data-index="locked">
@@ -138,20 +138,11 @@
           </template>
         </a-table-column>
 
-        <a-table-column title="修改时间" data-index="modifyTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
+        <a-table-column title="修改时间" data-index="modifyTime" />
 
         <a-table-column title="修改人" data-index="modifyBy" :width="80" />
 
-        <a-table-column title="创建时间" data-index="createTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
+        <a-table-column title="创建时间" data-index="createTime" />
         <a-table-column title="创建人" data-index="createBy" :width="80" />
 
         <a-table-column
@@ -254,12 +245,16 @@ export default {
     const { crud, formComponent } = useCrud({
       uri: '/api/users',
       title: '用户',
-      defaultSort: ['createTime,desc']
+      defaultSort: ['id,desc']
     })
 
     const formRules = ref({
       username: [
         { required: true, message: '缺少用户名' },
+        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
+      ],
+      nickname: [
+        { required: true, message: '缺少昵称' },
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
       orderNo: [{ required: true, message: '缺少序号' }],

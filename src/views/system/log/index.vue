@@ -87,18 +87,30 @@
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
-          <a-button
-            type="primary"
-            status="danger"
-            :disabled="crud.selectedKeys.length === 0"
-            :loading="crud.deleteLoading"
-            @click="crud.batchDelete"
+          <a-popconfirm
+            content="确认清空所有正常日志？"
+            @ok="clear('OK')"
+            type="warning"
           >
-            <template #icon>
-              <icon-minus />
-            </template>
-            删除
-          </a-button>
+            <a-button type="primary" status="danger" :loading="clearLoading">
+              <template #icon>
+                <icon-delete />
+              </template>
+              清空正常
+            </a-button>
+          </a-popconfirm>
+          <a-popconfirm
+            content="确认清空所有错误日志？"
+            @ok="clear('FAIL')"
+            type="warning"
+          >
+            <a-button type="primary" status="danger" :loading="clearLoading">
+              <template #icon>
+                <icon-delete />
+              </template>
+              清空错误
+            </a-button>
+          </a-popconfirm>
         </a-space>
       </a-col>
       <a-col :span="8" style="text-align: right">
@@ -118,22 +130,29 @@
       :bordered="false"
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
-      :row-selection="crud.rowSelection"
+      :expandable="expandable"
     >
       <template #columns>
         <a-table-column
-          title="内容"
+          title="操作描述"
           tooltip
           :width="180"
           data-index="description"
         />
         <a-table-column title="参数" tooltip ellipsis data-index="params" />
-        <a-table-column title="间隔(ms)" data-index="spendTime" />
-        <a-table-column title="时间" :width="180" data-index="status">
+        <a-table-column title="间隔(ms)" data-index="spendTime">
           <template #cell="{ record }">
-            {{ parseTime(record.createTime) }}
+            <a-tag v-if="record.spendTime < 100" color="green">{{
+              record.spendTime
+            }}</a-tag>
+            <a-tag v-else-if="record.spendTime < 500" color="orange">{{
+              record.spendTime
+            }}</a-tag>
+            <a-tag v-else color="red">{{ record.spendTime }}</a-tag>
           </template>
         </a-table-column>
+        <a-table-column title="操作员" data-index="createBy" />
+        <a-table-column title="时间" :width="180" data-index="createTime" />
 
         <a-table-column title="状态" :width="120" data-index="status">
           <template #cell="{ record }">
@@ -168,17 +187,58 @@
 import useCrud from '@/components/crud'
 import NumberRange from '@/components/number-range/index.vue'
 import { parseTime } from '@/utils/time'
+import { reactive, h, ref } from 'vue'
+
+import { clearByStatus } from '@/api/system/log'
+import { Notification } from '@arco-design/web-vue'
 export default {
   name: 'LogPage',
   setup() {
     const { crud } = useCrud({
       uri: '/api/logs',
       title: '日志',
-      defaultSort: ['createTime,desc']
+      defaultSort: ['id,desc']
     })
+
+    const expandable = reactive({
+      title: '异常',
+      width: 80,
+      fixed: true,
+      expandedRowRender: (record) => {
+        if (record.status === 'FAIL') {
+          return h(
+            'p',
+            {
+              style: 'white-space: break-spaces;'
+            },
+            record.exception
+          )
+        }
+      }
+    })
+
+    const clearLoading = ref(false)
+    const clear = (status) => {
+      clearLoading.value = true
+      clearByStatus({ status })
+        .then(() => {
+          Notification.success({
+            title: '系统提示',
+            content: '日志清空成功'
+          })
+          crud.refreshData()
+        })
+        .finally(() => {
+          clearLoading.value = false
+        })
+    }
+
     return {
       crud,
-      parseTime
+      parseTime,
+      expandable,
+      clearLoading,
+      clear
     }
   },
   components: { NumberRange }

@@ -30,6 +30,17 @@ export default function useCrud(options) {
     sort: sort.value
   }))
 
+  const formatTreeDataIfNeed = (data) => {
+    data.forEach(e => {
+      if (e.children ? e.children.length === 0 : true) {
+        delete e.children
+      } else {
+        formatTreeDataIfNeed(e.children)
+      }
+    })
+    return data
+  }
+
   const loadData = () => {
     dataLoading.value = true
     crudApi
@@ -37,10 +48,10 @@ export default function useCrud(options) {
       .then((res) => {
         const serverData = res.data
         if (Array.isArray(serverData)) {
-          data.value = serverData
+          data.value = formatTreeDataIfNeed(serverData)
           pagination.total = serverData.length
         } else {
-          data.value = serverData.content
+          data.value = formatTreeDataIfNeed(serverData.content)
           pagination.total = serverData.totalElements
         }
         dataLoading.value = false
@@ -78,7 +89,7 @@ export default function useCrud(options) {
   const exportData = () => {
     exportLoading.value = true
     crudApi.exportData(pageable.value, query.value).then((res) => {
-      downloadFile(res.data, options.title, 'xlsx')
+      downloadFile(res.data, options.title, 'csv')
     }).finally(() => {
       exportLoading.value = false
     })

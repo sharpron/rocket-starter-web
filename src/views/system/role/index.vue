@@ -105,25 +105,11 @@
       :row-selection="crud.rowSelection"
     >
       <template #columns>
-        <a-table-column title="名称" data-index="name" />
-        <a-table-column title="状态" data-index="hide">
+        <a-table-column title="名称" data-index="name" :width="150" />
+        <a-table-column title="状态" data-index="hide" :width="100">
           <template #cell="{ record }">
             <a-tag v-if="record.disabled">禁用</a-tag>
             <a-tag v-else color="green">正常</a-tag>
-          </template>
-        </a-table-column>
-        <a-table-column title="部门" data-index="deptNames" :width="180">
-          <template #cell="{ record }">
-            <a-space>
-              <a-tag v-for="name in record.deptNames">{{ name }}</a-tag>
-            </a-space>
-          </template>
-        </a-table-column>
-        <a-table-column title="菜单" data-index="menuTitles" :width="180">
-          <template #cell="{ record }">
-            <a-space>
-              <a-tag v-for="title in record.menuTitles">{{ title }}</a-tag>
-            </a-space>
           </template>
         </a-table-column>
         <a-table-column title="描述" data-index="description" />
@@ -191,7 +177,6 @@
         <a-tree
           :checkable="true"
           v-model:checked-keys="crud.form.menuIds"
-          :check-strictly="checkStrictly"
           :data="menuDicts"
           :field-names="{
             key: 'id',
@@ -224,7 +209,7 @@ export default {
     const { crud, formComponent } = useCrud({
       uri: '/api/roles',
       title: '角色',
-      defaultSort: ['createTime,desc']
+      defaultSort: ['id,desc']
     })
 
     const formRules = ref({

@@ -21,7 +21,7 @@
             <a-col :span="8">
               <a-form-item field="type" label="类型">
                 <a-select
-                  v-model="crud.form.type"
+                  v-model="crud.query.type"
                   allow-clear
                   placeholder="选择类型查询"
                 >
@@ -121,11 +121,13 @@
         />
         <a-table-column title="图标" data-index="icon" tooltip ellipsis>
           <template #cell="{ record }">
-            <component
-              :is="record.icon"
-              style="width: 20px; vertical-align: middle"
-            />
-            {{ record.icon }}
+            <span v-if="record.icon">
+              <component
+                :is="record.icon"
+                style="width: 20px; vertical-align: middle"
+              />
+              {{ record.icon }}
+            </span>
           </template>
         </a-table-column>
 

@@ -199,7 +199,7 @@ export default {
       defaultForm: {
         valueType: 'STR'
       },
-      defaultSort: ['createTime,desc']
+      defaultSort: ['id,desc']
     })
 
     const colors = {

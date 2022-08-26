@@ -98,7 +98,7 @@
     >
       <template #columns>
         <a-table-column title="名称" data-index="name" />
-        <a-table-column title="状态" width="150" data-index="hide">
+        <a-table-column title="状态" :width="150" data-index="hide">
           <template #cell="{ record }">
             <a-tag v-if="record.disabled">禁用</a-tag>
             <a-tag v-else color="green">正常</a-tag>

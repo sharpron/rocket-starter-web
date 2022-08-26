@@ -1,6 +1,6 @@
 <template>
   <a-tree-select
-    v-model="value"
+    v-model="modelValue"
     :data="deptDicts"
     :placeholder="placeholder || '请选择管理部门'"
     :field-names="{
@@ -20,7 +20,7 @@ export default {
   props: {
     modelValue: {
       type: [Number, Array],
-      required: true
+      required: false
     },
     multiple: {
       type: Boolean,
@@ -32,7 +32,7 @@ export default {
     }
   },
   emits: ['update:model-value'],
-  setup(props, context) {
+  setup(_props, context) {
     const deptDicts = ref([])
 
     onMounted(() => {
@@ -41,13 +41,10 @@ export default {
       })
     })
 
-    const value = toRef(props, 'modelValue')
-
     const onChange = (val) => {
       context.emit('update:model-value', val)
     }
     return {
-      value,
       deptDicts,
       onChange
     }
