@@ -28,6 +28,6 @@ export default {
   width: 20px;
   margin-right: 16px;
   color: var(--color-text-3);
-  vertical-align: middle;
+  vertical-align: text-top;
 }
 </style>
