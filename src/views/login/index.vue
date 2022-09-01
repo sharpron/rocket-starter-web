@@ -58,18 +58,20 @@
               <icon-lock />
             </template>
           </a-input>
-          <img
-            class="captcha"
-            alt="验证码"
+          <a-image
+            width="100"
+            height="100%"
+            style="cursor: pointer"
             :src="captcha.codeUrl"
             @click="loadCaptcha"
+            :preview="false"
           />
         </a-form-item>
         <a-space :size="16" direction="vertical">
           <div class="login-form-password-actions">
             <a-checkbox
               v-model="userInfo.rememberMe"
-              @change="setRememberPassword;"
+              @change="setRememberPassword"
             >
               记住我
             </a-checkbox>

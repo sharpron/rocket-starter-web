@@ -30,6 +30,9 @@
         </a-tooltip>
       </li>
       <li>
+        <message-component />
+      </li>
+      <li>
         <a-tooltip :content="`点击切换为${isDark ? '暗黑' : '亮色'}模式`">
           <a-button class="nav-btn" :shape="'circle'" @click="toggleDark()">
             <template #icon>
@@ -93,7 +96,10 @@ import useUserStore from '@/store/user'
 
 import { useDark, useToggle, useFullscreen } from '@vueuse/core'
 
+import MessageComponent from '@/components/message/index.vue'
+
 export default defineComponent({
+  components: { MessageComponent },
   setup() {
     const appStore = useAppStore()
     const isDark = useDark({

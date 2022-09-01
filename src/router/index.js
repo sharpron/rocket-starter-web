@@ -68,6 +68,11 @@ const router = createRouter({
           path: 'dict',
           name: 'Dict',
           component: () => import('@/views/system/dict/index.vue')
+        },
+        {
+          path: 'message',
+          name: 'Message',
+          component: () => import('@/views/system/message/index.vue')
         }
       ]
     },
