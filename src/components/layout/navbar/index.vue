@@ -71,7 +71,7 @@
           </a-avatar>
           <template #content>
             <a-doption>
-              <a-space @click="$router.push({ name: 'Info' })">
+              <a-space @click="$router.push('/user/info')">
                 <icon-user />
                 <span> 用户中心 </span>
               </a-space>

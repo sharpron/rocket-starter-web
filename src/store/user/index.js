@@ -40,7 +40,11 @@ const useUserStore = defineStore('user', {
   state: () => ({
     userId: undefined,
     username: undefined,
+    nickname: undefined,
+    mobile: undefined,
+    email: undefined,
     deptId: undefined,
+    deptName: undefined,
     perms: undefined,
     manageDeptIds: undefined,
     serverMenu: undefined,

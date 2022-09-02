@@ -7,3 +7,19 @@ export function modifyPass(data) {
         data
     })
 }
+
+export function modifySelfInfo(data) {
+    return axios.request({
+        url: '/api/users/me',
+        method: 'put',
+        data
+    })
+}
+
+export function modifySelfPass(data) {
+    return axios.request({
+        url: '/api/users/me/passwords',
+        method: 'put',
+        data
+    })
+}

@@ -17,7 +17,7 @@ export default defineComponent({
     const router = useRouter()
     const back = () => {
       // warning： Go to the node that has the permission
-      router.push('/')
+      router.replace('/')
     }
     return { back }
   }
