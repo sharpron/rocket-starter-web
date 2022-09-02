@@ -17,18 +17,25 @@ export default function setupUserLoginInfoGuard(router) {
       return data
     }
     if (await isAuth()) {
-      // 检查权限，默认为undefined
-      if (!userStore.perms) {
-        await userStore.loadUserInfo()
-      }
-      // 检查菜单，默认为undefined
-
-      if (!userStore.serverMenu) {
-        await userStore.fetchServerMenus()
-        // // trigger a redirection
-        next({ ...to, replace: true })
+      if (to.path === LOGING_ROUTE_PATH) {
+        next({
+          path: to.query.redirect || '/',
+          replace: true
+        })
       } else {
-        next()
+        // 检查权限，默认为undefined
+        if (!userStore.perms) {
+          await userStore.loadUserInfo()
+        }
+        // 检查菜单，默认为undefined
+
+        if (!userStore.serverMenu) {
+          await userStore.fetchServerMenus()
+          // // trigger a redirection
+          next({ ...to, replace: true })
+        } else {
+          next()
+        }
       }
     } else if (WHITE_LIST.includes(to.path)) {
       next()

@@ -34,7 +34,6 @@
         >
           <a-input-password
             v-model="userInfo.password"
-            autocomplete="current-password"
             placeholder="密码："
             allow-clear
           >
@@ -68,14 +67,6 @@
           />
         </a-form-item>
         <a-space :size="16" direction="vertical">
-          <div class="login-form-password-actions">
-            <a-checkbox
-              v-model="userInfo.rememberMe"
-              @change="setRememberPassword"
-            >
-              记住我
-            </a-checkbox>
-          </div>
           <a-button type="primary" html-type="submit" long :loading="loading">
             登录
           </a-button>
@@ -114,12 +105,12 @@ export default {
 
     const userStore = useUserStore()
     const router = useRouter()
+
     const handleSubmit = async ({ values, errors }) => {
       if (errors) {
         return
       }
       loading.value = true
-
       try {
         await userStore.login({
           ...values,
@@ -136,7 +127,8 @@ export default {
         path: redirect || '/',
         query: {
           ...othersQuery
-        }
+        },
+        replace: true
       })
       Message.success('登录成功')
     }
