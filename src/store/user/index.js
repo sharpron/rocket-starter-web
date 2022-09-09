@@ -6,7 +6,6 @@ import {
 } from '@/api/system/auth'
 import { getSelfMenus } from '@/api/system/menu'
 
-
 /**
  * 生成菜单
  * @param menus 菜单
@@ -16,23 +15,23 @@ import { getSelfMenus } from '@/api/system/menu'
 function generateMenus(menus, metas) {
   return menus
     .filter((e) => e.type !== 'BUTTON')
-    .filter(e => !e.hide)
+    .filter((e) => !e.hide)
     .map((e) => {
       if (e.path) {
         metas[e.path] = {
           title: e.title,
           icon: e.icon,
-          cacheable: e.cacheable,
+          cacheable: e.cacheable
         }
       }
-      return ({
+      return {
         id: e.id,
         path: e.path,
         title: e.title,
         icon: e.icon,
         cacheable: e.cacheable,
         children: generateMenus(e.children, metas)
-      })
+      }
     })
 }
 

@@ -1,11 +1,11 @@
 <template>
   <a-layout class="layout">
     <a-layout-header>
-      <nav-bar />
+      <LayoutNavbar />
     </a-layout-header>
     <a-layout class="main">
       <a-layout-sider breakpoint="xl" :width="220" :collapsed="collapsed">
-        <Menu v-model:collapsed="collapsed" />
+        <LayoutMenu v-model:collapsed="collapsed" />
       </a-layout-sider>
       <a-layout style="overflow: hidden">
         <a-layout-header class="layout-header">
@@ -35,15 +35,15 @@
 import { computed, ref } from 'vue'
 import useTabBarStore from '@/store/tab-bar/'
 
-import Menu from './menu/index.vue'
-import NavBar from './navbar/index.vue'
+import LayoutMenu from './menu/index.vue'
+import LayoutNavbar from './navbar/index.vue'
 import TabBar from './tab-bar/index.vue'
 
 export default {
   name: 'LayoutComponent',
   components: {
-    Menu,
-    NavBar,
+    LayoutMenu,
+    LayoutNavbar,
     TabBar
   },
   setup() {

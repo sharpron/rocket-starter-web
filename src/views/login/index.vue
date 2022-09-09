@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <background />
+    <LoginBackground />
     <div class="login-form-wrapper">
       <div class="login-form-title">账号密码登录</div>
       <a-divider orientation="left"></a-divider>
@@ -82,7 +82,7 @@ import { ref, onMounted } from 'vue'
 import useUserStore from '@/store/user'
 import { useRouter } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
-import Background from './background.vue'
+import LoginBackground from './background.vue'
 
 export default {
   name: 'LoginPage',
@@ -135,7 +135,7 @@ export default {
       handleSubmit
     }
   },
-  components: { Background }
+  components: { LoginBackground }
 }
 </script>
 

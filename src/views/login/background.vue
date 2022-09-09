@@ -49,7 +49,7 @@
 </template>
 <script>
 export default {
-  name: 'Background'
+  name: 'LoginBackground'
 }
 </script>
 

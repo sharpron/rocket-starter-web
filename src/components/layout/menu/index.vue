@@ -1,8 +1,7 @@
 <template>
   <a-menu
     class="menu"
-    v-model:collapsed="collapsed"
-    @update:collapsed="onCollapsed"
+    v-model:collapsed="collapsedValue"
     show-collapse-button
     :selected-keys="defaultSelectedKeys"
     auto-open-selected
@@ -18,7 +17,10 @@ import { ref, computed } from 'vue'
 import useUserStore from '@/store/user/'
 import SidebarItem from './sidebar-item.vue'
 import { listenerRouteChange } from '@/router/route-listener'
+
+import { useVModel } from '@vueuse/core'
 export default {
+  name: 'LayoutMenu',
   components: {
     SidebarItem
   },
@@ -29,7 +31,8 @@ export default {
     }
   },
   emits: ['update:collapsed'],
-  setup(_props, ctx) {
+  setup(props, { emit }) {
+    const collapsedValue = useVModel(props, 'collapsed', emit)
     const userStore = useUserStore()
     const menus = computed(() => {
       return userStore.appAsyncMenus
@@ -41,14 +44,10 @@ export default {
       defaultSelectedKeys.value = [route.path]
     })
 
-    const onCollapsed = (val) => {
-      ctx.emit('update:collapsed', val)
-    }
-
     return {
       menus,
-      onCollapsed,
-      defaultSelectedKeys
+      defaultSelectedKeys,
+      collapsedValue
     }
   }
 }

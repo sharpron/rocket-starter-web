@@ -252,7 +252,7 @@
 import useCrud from '@/components/crud'
 import { computed, ref, h } from 'vue'
 export default {
-  name: 'Menu',
+  name: 'MenuPage',
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/menus',

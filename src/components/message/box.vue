@@ -60,6 +60,7 @@
 import { findSelfByPage, read } from '@/api/message'
 import { ref } from 'vue'
 export default {
+  name: 'MessageBox',
   props: {
     unreadChange: {
       type: Function,

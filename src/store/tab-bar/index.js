@@ -9,7 +9,7 @@ const createTag = (route, meta) => {
     name: String(name),
     fullPath: fullPath || path,
     query,
-    cacheable: finalMeta.cacheable,
+    cacheable: finalMeta.cacheable
   }
 }
 
@@ -27,7 +27,7 @@ const useTabBarStore = defineStore('tabBar', {
 
   actions: {
     addTagWithRoute(route) {
-      if (this.tags.some(e => e.name === route.name)) return
+      if (this.tags.some((e) => e.name === route.name)) return
       const meta = this.getRouteMeta(route)
       this.tags.push(createTag(route, meta))
       if (meta.cacheable) {
@@ -43,8 +43,7 @@ const useTabBarStore = defineStore('tabBar', {
       this.tags.splice(index, 1)
     },
     deleteTagsWithExcludes(start, index) {
-      this.tags = this.tags.slice(0, start)
-        .concat(this.tags.slice(index, 1))
+      this.tags = this.tags.slice(0, start).concat(this.tags.slice(index, 1))
     },
     deleteTagsByRange(start, end) {
       // Delete route from caches.
@@ -53,7 +52,7 @@ const useTabBarStore = defineStore('tabBar', {
         this.caches.delete(tag.name)
       }
       this.tags.splice(start, end - start)
-    },
+    }
   }
 })
 

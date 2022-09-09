@@ -9,7 +9,11 @@
           label-align="left"
         >
           <a-row :gutter="16">
-            <a-col v-for="queryColumn in queryColumns" :span="8">
+            <a-col
+              v-for="(queryColumn, index) in queryColumns"
+              :key="index"
+              :span="8"
+            >
               <a-form-item
                 :field="queryColumn.editField || queryColumn.dataIndex"
                 :label="queryColumn.title"
@@ -24,6 +28,7 @@
                 >
                   <a-option
                     v-for="option in queryColumn.options || []"
+                    :key="option.value"
                     :value="option.value"
                     >{{ option.label }}</a-option
                   >
@@ -59,6 +64,7 @@
                       { value: 'true', label: '是' },
                       { value: 'false', label: '否' }
                     ]"
+                    :key="option.value"
                     :value="option.value"
                     >{{ option.label }}</a-option
                   >
@@ -168,7 +174,8 @@
     >
       <template #columns>
         <a-table-column
-          v-for="column in tableColumns"
+          v-for="(column, index) in tableColumns"
+          :key="index"
           :title="column.title"
           :width="column.width || 120"
           :data-index="column.dataIndex"
@@ -268,7 +275,8 @@
   >
     <a-form ref="formComponent" :model="crud.form">
       <a-form-item
-        v-for="formItem in formItems"
+        v-for="(formItem, index) in formItems"
+        :key="index"
         :rules="formItem.rules || []"
         :field="formItem.editField || formItem.dataIndex"
         :label="formItem.title"
@@ -280,6 +288,7 @@
         >
           <a-option
             v-for="option in formItem.options || []"
+            :key="option.value"
             :value="option.value"
             >{{ option.label }}</a-option
           >

@@ -203,7 +203,7 @@ import { getMenuDicts } from '@/api/system/menu'
 import DeptSelect from '../dept/dept-select.vue'
 
 export default {
-  name: 'Role',
+  name: 'RolePage',
   components: { DeptSelect },
   setup() {
     const { crud, formComponent } = useCrud({

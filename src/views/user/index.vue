@@ -184,8 +184,6 @@
     </a-form>
   </a-modal>
 </template>
-  
-  
 <script>
 import defaultAvatar from '@/assets/images/default-avatar.png'
 import userBg from '@/assets/images/user-bg.jpg'
@@ -195,7 +193,7 @@ import { reactive, ref } from 'vue'
 import { modifySelfInfo, modifySelfPass } from '@/api/system/user'
 import { Message } from '@arco-design/web-vue'
 export default {
-  name: 'Info',
+  name: 'UserInfo',
   setup() {
     const userStore = useUserStore()
 
@@ -257,7 +255,8 @@ export default {
           {
             validator: (value, callback) => {
               if (value !== modifyPass.form.newPass) {
-                callback('确认密码和新密码不一致')
+                const errorMessage = '确认密码和新密码不一致'
+                callback(errorMessage)
               } else {
                 callback()
               }
@@ -310,7 +309,7 @@ export default {
   }
 }
 </script>
-  
+
 <style scoped lang="less">
 .header {
   background: url(../../assets/images/user-bg.jpg) no-repeat;
@@ -322,4 +321,3 @@ export default {
   }
 }
 </style>
-  

@@ -1,9 +1,5 @@
 <template>
-  <a-select
-    :model-value="modelValue"
-    @change="onChange"
-    :placeholder="placeholder"
-  >
+  <a-select :model-value="value" :placeholder="placeholder">
     <a-option v-for="option in options" :key="option.id" :value="option.id">{{
       option.name
     }}</a-option>
@@ -12,6 +8,8 @@
 <script>
 import { onMounted, ref } from 'vue'
 import { getDictItemsAsDict } from '@/api/system/dict-item'
+
+import { useVModel } from '@vueuse/core'
 export default {
   props: {
     modelValue: {
@@ -32,8 +30,10 @@ export default {
     }
   },
   emits: ['update:model-value'],
-  setup(props, context) {
+  setup(props, { emit }) {
     const options = ref([])
+
+    const value = useVModel(props, 'collapsed', emit)
 
     onMounted(() => {
       getDictItemsAsDict({ dictName: props.dictName }).then((res) => {
@@ -41,12 +41,9 @@ export default {
       })
     })
 
-    const onChange = (val) => {
-      context.emit('update:model-value', val)
-    }
     return {
       options,
-      onChange
+      value
     }
   }
 }

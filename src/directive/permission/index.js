@@ -1,4 +1,4 @@
-import { checkPermission } from '@/utils/permission';
+import { checkPermission } from '@/utils/permission'
 
 function handlePermission(el, binding) {
   const { value } = binding
@@ -17,9 +17,9 @@ function handlePermission(el, binding) {
 
 export default {
   mounted(el, binding) {
-    handlePermission(el, binding);
+    handlePermission(el, binding)
   },
   updated(el, binding) {
-    handlePermission(el, binding);
-  },
-};
+    handlePermission(el, binding)
+  }
+}

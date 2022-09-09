@@ -99,6 +99,7 @@ import { useDark, useToggle, useFullscreen } from '@vueuse/core'
 import MessageComponent from '@/components/message/index.vue'
 
 export default defineComponent({
+  name: 'LayoutNavbar',
   components: { MessageComponent },
   setup() {
     const appStore = useAppStore()

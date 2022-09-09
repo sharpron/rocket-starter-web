@@ -28,6 +28,7 @@
         <a-radio-group v-model="send.form.type" type="button">
           <a-radio
             v-for="messageType in messageTypes"
+            :key="messageType.value"
             :value="messageType.value"
             >{{ messageType.label }}</a-radio
           >
@@ -58,7 +59,7 @@ import { checkPermission } from '@/utils/permission'
 import { publish, send as sendPrivate } from '@/api/message'
 import { Message } from '@arco-design/web-vue'
 export default {
-  name: 'Message',
+  name: 'MessagePage',
   components: {
     Crud
   },

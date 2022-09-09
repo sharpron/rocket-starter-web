@@ -11,7 +11,7 @@
 import { computed, ref, toRef } from 'vue'
 import { upload } from '@/api/upload'
 export default {
-  name: 'Upload',
+  name: 'FileUpload',
   props: {
     modelValue: {
       type: [Object, Array],

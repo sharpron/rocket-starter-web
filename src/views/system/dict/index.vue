@@ -408,9 +408,9 @@
 
 <script>
 import useCrud from '@/components/crud'
-import { computed, ref, h } from 'vue'
+import { ref } from 'vue'
 export default {
-  name: 'Dict',
+  name: 'DictPage',
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/dictionaries',

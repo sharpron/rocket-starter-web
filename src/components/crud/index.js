@@ -1,4 +1,4 @@
-import { computed, onMounted, reactive, ref, readonly, toRef, unref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import useCrudApi from '@/api/crud'
 import { downloadFile } from '@/utils/file'
 import { Message, Modal } from '@arco-design/web-vue'
@@ -31,7 +31,7 @@ export default function useCrud(options) {
   }))
 
   const formatTreeDataIfNeed = (data) => {
-    data.forEach(e => {
+    data.forEach((e) => {
       if (e.children ? e.children.length === 0 : true) {
         delete e.children
       } else {
@@ -88,11 +88,14 @@ export default function useCrud(options) {
   const exportLoading = ref(false)
   const exportData = () => {
     exportLoading.value = true
-    crudApi.exportData(pageable.value, query.value).then((res) => {
-      downloadFile(res.data, options.title, 'csv')
-    }).finally(() => {
-      exportLoading.value = false
-    })
+    crudApi
+      .exportData(pageable.value, query.value)
+      .then((res) => {
+        downloadFile(res.data, options.title, 'csv')
+      })
+      .finally(() => {
+        exportLoading.value = false
+      })
   }
 
   const form = ref({ ...options.defaultForm })
@@ -123,13 +126,15 @@ export default function useCrud(options) {
   }
 
   const save = (done) => {
-    formComponent.value.validate().then(errors => {
+    formComponent.value.validate().then((errors) => {
       if (errors) {
         done(false)
         return
       }
       saveLoading.value = true
-      const request = isEdit.value ? crudApi.update(form.value) : crudApi.create(form.value)
+      const request = isEdit.value
+        ? crudApi.update(form.value)
+        : crudApi.create(form.value)
       request
         .then(() => {
           Message.success(options.title + saveMode.value + '成功')
@@ -141,7 +146,6 @@ export default function useCrud(options) {
           } else {
             refreshData()
           }
-
         })
         .catch(() => {
           saveLoading.value = false
@@ -175,9 +179,8 @@ export default function useCrud(options) {
       onOk() {
         deleteByIds(selectedKeys.value)
       }
-    });
+    })
   }
-
 
   const rowSelection = reactive({
     type: 'checkbox',

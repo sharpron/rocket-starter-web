@@ -3,13 +3,13 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  extends: ['plugin:vue/vue3-essential', 'standard'],
+  extends: ['plugin:vue/vue3-essential', 'standard', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['vue'],
+  plugins: ['vue', 'prettier'],
   rules: {
-    'space-before-function-paren': 0
+    'prettier/prettier': 'error'
   }
 }

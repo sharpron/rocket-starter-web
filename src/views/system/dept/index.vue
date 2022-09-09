@@ -175,7 +175,7 @@
 <script>
 import useCrud from '@/components/crud'
 export default {
-  name: 'Dept',
+  name: 'DeptPage',
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/departments',

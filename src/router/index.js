@@ -28,15 +28,14 @@ const router = createRouter({
       path: '/user',
       name: 'UserCenter',
       component: DEFAULT_LAYOUT,
-      children: [],
       meta: { title: '用户中心' },
       children: [
         {
           path: 'info',
           name: 'UserInfo',
           component: () => import('@/views/user/index.vue'),
-          meta: { title: '用户信息' },
-        },
+          meta: { title: '用户信息' }
+        }
       ]
     },
 

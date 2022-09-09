@@ -191,7 +191,7 @@
 <script>
 import useCrud from '@/components/crud'
 export default {
-  name: 'Menu',
+  name: 'PropertyPage',
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/properties',

@@ -6,4 +6,3 @@ export function getDeptDicts() {
     method: 'get'
   })
 }
-
