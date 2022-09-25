@@ -79,7 +79,10 @@ const useUserStore = defineStore('user', {
     // Login
     async login(loginForm) {
       const { data } = await userLogin(loginForm)
-      this.setInfo(data)
+      if (data.status === 'OK') {
+        this.setInfo(data.principal)
+      }
+      return data.status
     },
 
     logoutCallBack() {

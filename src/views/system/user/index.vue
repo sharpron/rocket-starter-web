@@ -236,6 +236,8 @@ import { modifyPass as modifyPassApi } from '@/api/system/user'
 import { reactive, ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import DeptSelect from '../dept/dept-select.vue'
+import { PASSWORD_REGEX } from '@/utils/validate.js'
+
 export default {
   name: 'MenuPage',
   components: {
@@ -272,7 +274,7 @@ export default {
       rules: {
         newPass: [
           { required: true, message: '缺少新密码' },
-          { minLength: 6, maxLength: 255, message: '长度在2个字符到255之间' }
+          { match: PASSWORD_REGEX, message: '必须有字母数字特殊符号[8, 30]' }
         ]
       },
       visible: false,

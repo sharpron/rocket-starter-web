@@ -192,6 +192,8 @@ import useCrud from '@/components/crud'
 import { reactive, ref } from 'vue'
 import { modifySelfInfo, modifySelfPass } from '@/api/system/user'
 import { Message } from '@arco-design/web-vue'
+import { PASSWORD_REGEX, MOBILE_REGEX } from '@/utils/validate.js'
+
 export default {
   name: 'UserInfo',
   setup() {
@@ -213,7 +215,13 @@ export default {
       saveLoading: false,
       rules: {
         nickname: [{ required: true, message: '昵称不能为空' }],
-        mobile: [{ required: true, message: '手机号不能为空' }],
+        mobile: [
+          { required: true, message: '手机号不能为空' },
+          {
+            match: MOBILE_REGEX,
+            message: '手机号格式不正确'
+          }
+        ],
         email: [{ required: true, message: '邮箱不能为空' }]
       }
     })
@@ -249,7 +257,10 @@ export default {
       saveLoading: false,
       rules: {
         oldPass: [{ required: true, message: '原密码不能为空' }],
-        newPass: [{ required: true, message: '新密码不能为空' }],
+        newPass: [
+          { required: true, message: '新密码不能为空' },
+          { match: PASSWORD_REGEX, message: '必须有字母数字特殊符号[8, 30]' }
+        ],
         confirmPass: [
           { required: true, message: '确认密码不能为空' },
           {
