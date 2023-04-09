@@ -139,7 +139,9 @@
         >
           <template #cell="{ record }">
             <a-space>
-              <a-button @click="crud.openEdit(record)"> 修改 </a-button>
+              <a-button @click="crud.openEdit(preHandle(record))">
+                修改
+              </a-button>
               <a-popconfirm
                 content="确认删除该项?"
                 @ok="crud.deleteByIds([record.id])"
@@ -170,7 +172,7 @@
         </a-radio-group>
       </a-form-item>
 
-      <a-form-item field="value" label="配置值">
+      <a-form-item field="value" label="配置值" :rules="valueRules">
         <a-input-number
           v-if="crud.form.valueType === 'NUMBER'"
           v-model="crud.form.value"
@@ -190,6 +192,7 @@
 
 <script>
 import useCrud from '@/components/crud'
+import { computed } from 'vue'
 export default {
   name: 'PropertyPage',
   setup() {
@@ -217,12 +220,23 @@ export default {
         { minLength: 2, maxLength: 255, message: '长度位2个字符到255之间' }
       ],
       valueType: [{ required: true, message: '缺少值类型' }],
-      value: [
-        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
-      ],
       description: [
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ]
+    }
+
+    const valueRules = computed(() =>
+      crud.form.valueType === 'STR'
+        ? [{ minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }]
+        : [{ required: true, message: '缺少值' }]
+    )
+
+    const preHandle = (record) => {
+      const data = { ...record }
+      if (record.valueType === 'NUMBER') {
+        data.value = parseInt(record.value)
+      }
+      return data
     }
 
     return {
@@ -230,7 +244,9 @@ export default {
       colors,
       types,
       formRules,
-      formComponent
+      formComponent,
+      valueRules,
+      preHandle
     }
   }
 }
