@@ -239,7 +239,7 @@ import DeptSelect from '../dept/dept-select.vue'
 import { PASSWORD_REGEX } from '@/utils/validate.js'
 
 export default {
-  name: 'MenuPage',
+  name: 'UserPage',
   components: {
     DeptSelect
   },
