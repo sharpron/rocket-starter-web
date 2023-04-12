@@ -105,11 +105,7 @@ export default defineComponent({
     const appStore = useAppStore()
     const isDark = useDark({
       onChanged(dark) {
-        if (dark) {
-          document.body.setAttribute('arco-theme', 'dark')
-        } else {
-          document.body.removeAttribute('arco-theme')
-        }
+        appStore.toggleTheme(dark)
       }
     })
     const toggleDark = useToggle(isDark)

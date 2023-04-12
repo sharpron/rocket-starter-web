@@ -1,6 +1,7 @@
 {
   "colorWeak": false,
   "navbar": true,
+  "theme": "light",
   "menu": true,
   "hideMenu": false,
   "menuCollapse": false,

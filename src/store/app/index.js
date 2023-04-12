@@ -10,6 +10,9 @@ const useAppStore = defineStore('app', {
     },
     appDevice(state) {
       return state.device
+    },
+    isDark(state) {
+      return state.theme === 'dark'
     }
   },
 
