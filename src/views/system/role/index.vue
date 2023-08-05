@@ -178,6 +178,7 @@
           :checkable="true"
           v-model:checked-keys="crud.form.menuIds"
           :data="menuDicts"
+          check-strictly
           :field-names="{
             key: 'id',
             title: 'title',

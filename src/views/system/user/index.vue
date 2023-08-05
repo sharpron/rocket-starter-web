@@ -122,7 +122,7 @@
       <template #columns>
         <a-table-column title="用户名" data-index="username" :width="80" />
         <a-table-column title="昵称" data-index="nickname" :width="120" />
-        <a-table-column title="部门" data-index="deptName" />
+        <a-table-column title="部门" data-index="deptName" :width="160" />
 
         <a-table-column title="锁定状态" :width="120" data-index="locked">
           <template #cell="{ record }">
@@ -138,11 +138,11 @@
           </template>
         </a-table-column>
 
-        <a-table-column title="修改时间" data-index="modifyTime" />
+        <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
 
         <a-table-column title="修改人" data-index="modifyBy" :width="80" />
 
-        <a-table-column title="创建时间" data-index="createTime" />
+        <a-table-column title="创建时间" data-index="createTime" :width="160" />
         <a-table-column title="创建人" data-index="createBy" :width="80" />
 
         <a-table-column
@@ -181,14 +181,23 @@
       <a-form-item field="username" label="用户名">
         <a-input v-model="crud.form.username" placeholder="请输入标题" />
       </a-form-item>
+      <a-form-item v-if="!crud.form.id" field="username" label="密码">
+        <a-input-password
+          v-model="crud.form.password"
+          placeholder="请输入密码"
+        />
+      </a-form-item>
       <a-form-item field="nickname" label="昵称">
         <a-input v-model="crud.form.nickname" placeholder="请输入昵称" />
+      </a-form-item>
+      <a-form-item field="deptId" label="部门">
+        <dept-select v-model="crud.form.deptId" placeholder="请选择所在部门" />
       </a-form-item>
       <a-form-item field="mobile" label="手机号">
         <a-input-number v-model="crud.form.mobile" placeholder="请输入手机号" />
       </a-form-item>
       <a-form-item field="email" label="邮箱">
-        <a-input-number v-model="crud.form.email" placeholder="请输入邮箱" />
+        <a-input v-model="crud.form.email" placeholder="请输入邮箱" />
       </a-form-item>
       <a-form-item field="locked" label="是否锁定">
         <a-switch v-model="crud.form.locked" />
@@ -259,6 +268,10 @@ export default {
         { required: true, message: '缺少昵称' },
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
       ],
+      deptId: [{ required: true, message: '缺少所在部门' }],
+
+      mobile: [{ required: true, message: '缺少手机号' }],
+      email: [{ required: true, message: '缺少邮箱' }],
       orderNo: [{ required: true, message: '缺少序号' }],
       perm: [
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
