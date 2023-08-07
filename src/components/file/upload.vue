@@ -22,7 +22,7 @@ export default {
       default: 1
     }
   },
-  emits: ['update:model-value'],
+  emits: ['update:modelValue'],
   setup(props, context) {
     const value = toRef(props, 'modelValue')
 
@@ -52,10 +52,10 @@ export default {
           }
 
           if (props.limit === 1) {
-            context.emit('update:model-value', doc)
+            context.emit('update:modelValue', doc)
           } else {
             files.value.push(doc)
-            context.emit('update:model-value', files)
+            context.emit('update:modelValue', files)
           }
 
           onSuccess()

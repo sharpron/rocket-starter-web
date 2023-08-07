@@ -29,11 +29,11 @@ export default {
       default: null
     }
   },
-  emits: ['update:model-value'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const options = ref([])
 
-    const value = useVModel(props, 'collapsed', emit)
+    const value = useVModel(props, 'modelValue', emit)
 
     onMounted(() => {
       getDictItemsAsDict({ dictName: props.dictName }).then((res) => {

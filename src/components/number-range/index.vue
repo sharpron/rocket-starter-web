@@ -24,12 +24,12 @@ export default {
       default: false
     }
   },
-  emits: ['update:model-value'],
+  emits: ['update:modelValue'],
   setup(props, context) {
     const start = ref(props.modelValue[0])
     const end = ref(props.modelValue[1])
     const change = () => {
-      context.emit('update:model-value', [start.value, end.value])
+      context.emit('update:modelValue', [start.value, end.value])
     }
 
     return {

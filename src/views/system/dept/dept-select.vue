@@ -31,10 +31,10 @@ export default {
       default: null
     }
   },
-  emits: ['update:model-value'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const deptDicts = ref([])
-    const value = useVModel(props, 'collapsed', emit)
+    const value = useVModel(props, 'modelValue', emit)
     onMounted(() => {
       getDeptDicts().then((res) => {
         deptDicts.value = res.data

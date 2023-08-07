@@ -122,6 +122,8 @@
       <template #columns>
         <a-table-column title="用户名" data-index="username" :width="80" />
         <a-table-column title="昵称" data-index="nickname" :width="120" />
+        <a-table-column title="手机号" data-index="mobile" :width="140" />
+        <a-table-column title="邮箱" data-index="email" :width="180" />
         <a-table-column title="部门" data-index="deptName" :width="160" />
 
         <a-table-column title="锁定状态" :width="120" data-index="locked">
@@ -194,7 +196,7 @@
         <dept-select v-model="crud.form.deptId" placeholder="请选择所在部门" />
       </a-form-item>
       <a-form-item field="mobile" label="手机号">
-        <a-input-number v-model="crud.form.mobile" placeholder="请输入手机号" />
+        <a-input v-model="crud.form.mobile" placeholder="请输入手机号" />
       </a-form-item>
       <a-form-item field="email" label="邮箱">
         <a-input v-model="crud.form.email" placeholder="请输入邮箱" />
