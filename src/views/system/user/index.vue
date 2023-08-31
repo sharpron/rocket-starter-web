@@ -181,7 +181,11 @@
   >
     <a-form ref="formComponent" :model="crud.form" :rules="formRules">
       <a-form-item field="username" label="用户名">
-        <a-input v-model="crud.form.username" placeholder="请输入标题" />
+        <a-input
+          v-model="crud.form.username"
+          :disabled="crud.form.id"
+          placeholder="请输入用户名"
+        />
       </a-form-item>
       <a-form-item v-if="!crud.form.id" field="username" label="密码">
         <a-input-password
@@ -194,6 +198,13 @@
       </a-form-item>
       <a-form-item field="deptId" label="部门">
         <dept-select v-model="crud.form.deptId" placeholder="请选择所在部门" />
+      </a-form-item>
+      <a-form-item field="roleIds" label="角色">
+        <role-select
+          v-model="crud.form.roleIds"
+          placeholder="请选择角色"
+          multiple
+        />
       </a-form-item>
       <a-form-item field="mobile" label="手机号">
         <a-input v-model="crud.form.mobile" placeholder="请输入手机号" />
@@ -248,11 +259,13 @@ import { reactive, ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import DeptSelect from '../dept/dept-select.vue'
 import { PASSWORD_REGEX } from '@/utils/validate.js'
+import RoleSelect from '../role/role-select.vue'
 
 export default {
   name: 'UserPage',
   components: {
-    DeptSelect
+    DeptSelect,
+    RoleSelect
   },
   setup() {
     const { crud, formComponent } = useCrud({
