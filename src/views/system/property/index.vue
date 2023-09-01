@@ -61,13 +61,18 @@
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
-          <a-button type="primary" @click="crud.openAdd">
+          <a-button
+            v-permission="'property:create'"
+            type="primary"
+            @click="crud.openAdd"
+          >
             <template #icon>
               <icon-plus />
             </template>
             新增
           </a-button>
           <a-button
+            v-permission="'property:remove'"
             type="primary"
             status="danger"
             :disabled="crud.selectedKeys.length === 0"
@@ -139,14 +144,19 @@
         >
           <template #cell="{ record }">
             <a-space>
-              <a-button @click="crud.openEdit(preHandle(record))">
+              <a-button
+                v-permission="'property:modify'"
+                @click="crud.openEdit(preHandle(record))"
+              >
                 修改
               </a-button>
               <a-popconfirm
                 content="确认删除该项?"
                 @ok="crud.deleteByIds([record.id])"
               >
-                <a-button status="danger"> 删除 </a-button>
+                <a-button v-permission="'property:remove'" status="danger">
+                  删除
+                </a-button>
               </a-popconfirm>
             </a-space>
           </template>

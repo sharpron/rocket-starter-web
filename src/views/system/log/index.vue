@@ -92,7 +92,12 @@
             @ok="clear('OK')"
             type="warning"
           >
-            <a-button type="primary" status="danger" :loading="clearLoading">
+            <a-button
+              v-permission="'log:clear'"
+              type="primary"
+              status="danger"
+              :loading="clearLoading"
+            >
               <template #icon>
                 <icon-delete />
               </template>
@@ -104,7 +109,12 @@
             @ok="clear('FAIL')"
             type="warning"
           >
-            <a-button type="primary" status="danger" :loading="clearLoading">
+            <a-button
+              v-permission="'log:clear'"
+              type="primary"
+              status="danger"
+              :loading="clearLoading"
+            >
               <template #icon>
                 <icon-delete />
               </template>

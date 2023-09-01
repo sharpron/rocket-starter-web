@@ -54,13 +54,18 @@
         <a-row style="margin-bottom: 16px">
           <a-col :span="16">
             <a-space>
-              <a-button type="primary" @click="crud.openAdd">
+              <a-button
+                v-permission="'dictionary:create'"
+                type="primary"
+                @click="crud.openAdd"
+              >
                 <template #icon>
                   <icon-plus />
                 </template>
                 新增
               </a-button>
               <a-button
+                v-permission="'dictionary:remove'"
                 type="primary"
                 status="danger"
                 :disabled="crud.selectedKeys.length === 0"
@@ -157,12 +162,22 @@
             >
               <template #cell="{ record }">
                 <a-space>
-                  <a-button @click="crud.openEdit(record)"> 修改 </a-button>
+                  <a-button
+                    v-permission="'dictionary:modify'"
+                    @click="crud.openEdit(record)"
+                  >
+                    修改
+                  </a-button>
                   <a-popconfirm
                     content="确认删除该项?"
                     @ok="crud.deleteByIds([record.id])"
                   >
-                    <a-button status="danger"> 删除 </a-button>
+                    <a-button
+                      v-permission="'dictionary:remove'"
+                      status="danger"
+                    >
+                      删除
+                    </a-button>
                   </a-popconfirm>
                 </a-space>
               </template>
@@ -245,13 +260,18 @@
         <a-row style="margin-bottom: 16px">
           <a-col :span="16">
             <a-space>
-              <a-button type="primary" @click="dictItemCrud.openAdd">
+              <a-button
+                v-permission="'dictionary:create'"
+                type="primary"
+                @click="dictItemCrud.openAdd"
+              >
                 <template #icon>
                   <icon-plus />
                 </template>
                 新增
               </a-button>
               <a-button
+                v-permission="'dictionary:remove'"
                 type="primary"
                 status="danger"
                 :disabled="dictItemCrud.selectedKeys.length === 0"
@@ -343,14 +363,22 @@
             >
               <template #cell="{ record }">
                 <a-space>
-                  <a-button @click="dictItemCrud.openEdit(record)">
+                  <a-button
+                    v-permission="'dictionary:modify'"
+                    @click="dictItemCrud.openEdit(record)"
+                  >
                     修改
                   </a-button>
                   <a-popconfirm
                     content="确认删除该项?"
                     @ok="dictItemCrud.deleteByIds([record.id])"
                   >
-                    <a-button status="danger"> 删除 </a-button>
+                    <a-button
+                      v-permission="'dictionary:remove'"
+                      status="danger"
+                    >
+                      删除
+                    </a-button>
                   </a-popconfirm>
                 </a-space>
               </template>
