@@ -80,7 +80,7 @@
       <a-col :span="16">
         <a-space>
           <a-button
-            v-permission="'user:modify'"
+            v-permission="'user:create'"
             type="primary"
             @click="crud.openAdd"
           >
