@@ -137,7 +137,8 @@
       :loading="crud.dataLoading"
       :pagination="crud.pagination"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :expandable="expandable"

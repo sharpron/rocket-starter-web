@@ -55,7 +55,7 @@
             allow-clear
           >
             <template #prefix>
-              <icon-lock />
+              <icon-safe />
             </template>
           </a-input>
           <a-image

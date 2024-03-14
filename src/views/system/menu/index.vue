@@ -106,7 +106,8 @@
       :pagination="crud.pagination"
       v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :row-selection="crud.rowSelection"
@@ -158,13 +159,22 @@
         </a-table-column>
         <a-table-column title="权限" data-index="perm" tooltip ellipsis />
 
-        <a-table-column title="创建时间" data-index="createTime" :width="120">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
+        <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
+        <a-table-column
+          title="修改人"
+          data-index="modifyBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
+        <a-table-column title="创建时间" data-index="createTime" :width="160" />
+        <a-table-column
+          title="创建人"
+          data-index="createBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column
           title="操作"
@@ -210,6 +220,9 @@
         <a-tree-select
           v-model="crud.form.parentId"
           :data="formMenus"
+          :tree-props="{
+            defaultExpandAll: false
+          }"
           placeholder="请选择上级菜单"
         />
       </a-form-item>

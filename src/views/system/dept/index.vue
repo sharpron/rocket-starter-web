@@ -95,7 +95,8 @@
       :pagination="crud.pagination"
       v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :row-selection="crud.rowSelection"
@@ -109,27 +110,29 @@
             <a-tag v-else color="green">正常</a-tag>
           </template>
         </a-table-column>
-        <a-table-column title="序号" data-index="orderNo" />
-        <a-table-column title="修改时间" data-index="modifyTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
+        <a-table-column title="序号" data-index="orderNo" :width="80" />
 
-        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
-
-        <a-table-column title="创建时间" data-index="createTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
+        <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
+        <a-table-column
+          title="修改人"
+          data-index="modifyBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
+        <a-table-column title="创建时间" data-index="createTime" :width="160" />
+        <a-table-column
+          title="创建人"
+          data-index="createBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column
           title="操作"
           align="center"
-          :width="120"
+          :width="150"
           data-index="operations"
         >
           <template #cell="{ record }">
@@ -179,6 +182,10 @@
           }"
           placeholder="请选择上级部门"
         ></a-tree-select>
+      </a-form-item>
+
+      <a-form-item field="disabled" label="禁用">
+        <a-switch v-model="crud.form.disabled" />
       </a-form-item>
     </a-form>
   </a-modal>

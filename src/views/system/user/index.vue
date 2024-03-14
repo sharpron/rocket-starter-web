@@ -119,7 +119,8 @@
       :pagination="crud.pagination"
       v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :row-selection="crud.rowSelection"
@@ -128,7 +129,13 @@
         <a-table-column title="用户名" data-index="username" :width="80" />
         <a-table-column title="昵称" data-index="nickname" :width="120" />
         <a-table-column title="手机号" data-index="mobile" :width="140" />
-        <a-table-column title="邮箱" data-index="email" :width="180" />
+        <a-table-column
+          title="邮箱"
+          data-index="email"
+          :width="180"
+          tooltip
+          ellipsis
+        />
         <a-table-column title="部门" data-index="deptName" :width="160" />
 
         <a-table-column title="锁定状态" :width="120" data-index="locked">
@@ -146,11 +153,21 @@
         </a-table-column>
 
         <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
-
-        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
-
+        <a-table-column
+          title="修改人"
+          data-index="modifyBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
         <a-table-column title="创建时间" data-index="createTime" :width="160" />
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
+        <a-table-column
+          title="创建人"
+          data-index="createBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column
           title="操作"

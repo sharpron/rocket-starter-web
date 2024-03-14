@@ -104,7 +104,8 @@
       :pagination="crud.pagination"
       v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :row-selection="crud.rowSelection"
@@ -118,26 +119,28 @@
           </template>
         </a-table-column>
         <a-table-column title="描述" data-index="description" />
-        <a-table-column title="修改时间" data-index="modifyTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
 
-        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
-
-        <a-table-column title="创建时间" data-index="createTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
+        <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
+        <a-table-column
+          title="修改人"
+          data-index="modifyBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
+        <a-table-column title="创建时间" data-index="createTime" :width="160" />
+        <a-table-column
+          title="创建人"
+          data-index="createBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column
           title="操作"
           align="center"
-          :width="120"
+          :width="150"
           fixed="right"
           data-index="operations"
         >
@@ -186,17 +189,7 @@
         />
       </a-form-item>
       <a-form-item field="menuIds" label="菜单">
-        <a-tree
-          :checkable="true"
-          v-model:checked-keys="crud.form.menuIds"
-          :data="menuDicts"
-          check-strictly
-          :field-names="{
-            key: 'id',
-            title: 'title',
-            children: 'children'
-          }"
-        />
+        <menu-select v-model="crud.form.menuIds" />
       </a-form-item>
 
       <a-form-item field="description" label="描述">
@@ -211,13 +204,13 @@
 
 <script>
 import useCrud from '@/components/crud'
-import { onMounted, ref } from 'vue'
-import { getMenuDicts } from '@/api/system/menu'
+import { ref } from 'vue'
 import DeptSelect from '../dept/dept-select.vue'
+import MenuSelect from './menu-select.vue'
 
 export default {
   name: 'RolePage',
-  components: { DeptSelect },
+  components: { DeptSelect, MenuSelect },
   setup() {
     const { crud, formComponent } = useCrud({
       uri: '/api/roles',
@@ -233,18 +226,10 @@ export default {
       description: [{ maxLength: 255, message: '最多255个字符' }]
     })
 
-    const menuDicts = ref([])
-    onMounted(() => {
-      getMenuDicts().then((res) => {
-        menuDicts.value = res.data
-      })
-    })
-
     return {
       crud,
       formRules,
-      formComponent,
-      menuDicts
+      formComponent
     }
   }
 }

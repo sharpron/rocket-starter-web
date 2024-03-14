@@ -101,7 +101,8 @@
       :pagination="crud.pagination"
       v-model:selectedKeys="crud.selectedKeys"
       :data="crud.data"
-      :bordered="false"
+      :bordered="{ cell: true }"
+      column-resizable
       @page-change="crud.onPageChange"
       @page-size-change="crud.onPageSizeChange"
       :row-selection="crud.rowSelection"
@@ -119,21 +120,22 @@
         </a-table-column>
         <a-table-column title="描述" data-index="description" />
 
-        <a-table-column title="修改时间" data-index="modifyTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="修改人" data-index="modifyBy" :width="80" />
-
-        <a-table-column title="创建时间" data-index="createTime">
-          <template #cell="{ record }">
-            {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-          </template>
-        </a-table-column>
-
-        <a-table-column title="创建人" data-index="createBy" :width="80" />
+        <a-table-column title="修改时间" data-index="modifyTime" :width="160" />
+        <a-table-column
+          title="修改人"
+          data-index="modifyBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
+        <a-table-column title="创建时间" data-index="createTime" :width="160" />
+        <a-table-column
+          title="创建人"
+          data-index="createBy"
+          :width="100"
+          tooltip
+          ellipsis
+        />
 
         <a-table-column
           title="操作"

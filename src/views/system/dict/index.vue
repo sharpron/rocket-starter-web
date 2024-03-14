@@ -94,7 +94,8 @@
           :pagination="crud.pagination"
           v-model:selectedKeys="crud.selectedKeys"
           :data="crud.data"
-          :bordered="false"
+          :bordered="{ cell: true }"
+          column-resizable
           @page-change="crud.onPageChange"
           @page-size-change="crud.onPageSizeChange"
           :row-selection="crud.rowSelection"
@@ -303,7 +304,8 @@
           :pagination="dictItemCrud.pagination"
           v-model:selectedKeys="dictItemCrud.selectedKeys"
           :data="dictItemCrud.data"
-          :bordered="false"
+          :bordered="{ cell: true }"
+          column-resizable
           @page-change="dictItemCrud.onPageChange"
           @page-size-change="dictItemCrud.onPageSizeChange"
           :row-selection="dictItemCrud.rowSelection"
