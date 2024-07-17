@@ -105,33 +105,13 @@
             <a-table-column
               title="引用名称"
               data-index="name"
-              :width="120"
+              :width="150"
               tooltip
               ellipsis
             />
             <a-table-column
               title="描述"
               data-index="description"
-              :width="100"
-              tooltip
-              ellipsis
-            />
-
-            <a-table-column
-              title="修改时间"
-              data-index="modifyTime"
-              tooltip
-              ellipsis
-            >
-              <template #cell="{ record }">
-                {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-              </template>
-            </a-table-column>
-
-            <a-table-column
-              title="修改人"
-              data-index="modifyBy"
-              :width="80"
               tooltip
               ellipsis
             />
@@ -139,26 +119,16 @@
             <a-table-column
               title="创建时间"
               data-index="createTime"
-              tooltip
-              ellipsis
-            >
-              <template #cell="{ record }">
-                {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-              </template>
-            </a-table-column>
-
-            <a-table-column
-              title="创建人"
-              data-index="createBy"
-              :width="80"
+              :width="150"
               tooltip
               ellipsis
             />
+
             <a-table-column
               title="操作"
               align="center"
               fixed="right"
-              :width="140"
+              :width="150"
               data-index="operations"
             >
               <template #cell="{ record }">
@@ -339,28 +309,10 @@
             </a-table-column>
 
             <a-table-column
-              title="修改时间"
-              data-index="modifyTime"
-              tooltip
-              ellipsis
-            >
-              <template #cell="{ record }">
-                {{ crud.parseTime(record.createTime, '{y}-{m}-{d}') }}
-              </template>
-            </a-table-column>
-
-            <a-table-column
-              title="修改人"
-              data-index="modifyBy"
-              :width="80"
-              tooltip
-              ellipsis
-            />
-            <a-table-column
               title="操作"
               align="center"
               fixed="right"
-              :width="140"
+              :width="150"
               data-index="operations"
             >
               <template #cell="{ record }">

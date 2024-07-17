@@ -90,7 +90,7 @@
             新增
           </a-button>
           <a-button
-            v-permission="'user:modify'"
+            v-permission="'user:remove'"
             type="primary"
             status="danger"
             :disabled="crud.selectedKeys.length === 0"

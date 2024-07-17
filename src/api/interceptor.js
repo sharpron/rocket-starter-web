@@ -38,6 +38,19 @@ axios.interceptors.response.use(
       })
       return Promise.reject(error)
     }
+
+    // 将blob格式的错误信息转换为json消息
+    if (response.request.responseType === 'blob') {
+      return response.data.text().then((text) => {
+        const finalError = JSON.parse(text)
+        Message.error({
+          content: finalError.message,
+          duration: 5 * 1000
+        })
+        return Promise.reject(error)
+      })
+    }
+
     const finalError = response ? response.data : error
     Message.error({
       content: finalError.message,
