@@ -1,5 +1,5 @@
 <template>
-  <a-select v-model="value" :placeholder="placeholder">
+  <a-select v-model="value" :multiple="multiple" :placeholder="placeholder">
     <a-option v-for="option in options" :key="option.id" :value="option.id">{{
       option.name
     }}</a-option>
