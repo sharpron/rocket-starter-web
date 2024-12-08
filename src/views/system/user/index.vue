@@ -265,7 +265,10 @@
       :rules="modifyPass.rules"
     >
       <a-form-item field="newPass" label="新密码">
-        <a-input v-model="modifyPass.form.newPass" placeholder="请输入新密码" />
+        <a-input-password
+          v-model="modifyPass.form.newPass"
+          placeholder="请输入新密码"
+        />
       </a-form-item>
       <a-form-item
         field="confirmPass"
@@ -275,7 +278,7 @@
           { value: modifyPass.form.newPass, message: '确认密码不一致' }
         ]"
       >
-        <a-input
+        <a-input-password
           v-model="modifyPass.form.confirmPass"
           placeholder="请输入确认密码"
         />
@@ -327,7 +330,7 @@ export default {
 
     const modifyPass = reactive({
       form: {
-        username: null,
+        userId: null,
         newPass: null,
         confirmPass: null
       },
@@ -342,15 +345,18 @@ export default {
     })
 
     const openModifyPass = (user) => {
-      modifyPass.form.username = user.username
+      modifyPass.form.userId = user.id
       modifyPass.visible = true
     }
 
     const modifyFormComponent = ref()
 
-    const confirmModifyPass = async () => {
+    const confirmModifyPass = async (done) => {
       const errors = await modifyFormComponent.value.validate()
-      if (errors) return
+      if (errors) {
+        done(false)
+        return
+      }
 
       modifyPass.okLoading = true
       modifyPassApi(modifyPass.form)
@@ -359,6 +365,7 @@ export default {
         })
         .finally(() => {
           modifyPass.okLoading = false
+          done(true)
         })
     }
 
