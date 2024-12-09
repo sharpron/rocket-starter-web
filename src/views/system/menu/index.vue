@@ -303,7 +303,7 @@ export default {
           required: requiredPath,
           message: '菜单和链接该类型缺少路径'
         },
-        { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
+        { minLength: 1, maxLength: 255, message: '长度在1个字符到255之间' }
       ],
       perm: [
         { minLength: 2, maxLength: 255, message: '长度在2个字符到255之间' }
