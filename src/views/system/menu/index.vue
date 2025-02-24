@@ -223,6 +223,7 @@
           :tree-props="{
             defaultExpandAll: false
           }"
+          allow-clear
           placeholder="请选择上级菜单"
         />
       </a-form-item>
