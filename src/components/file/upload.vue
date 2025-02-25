@@ -1,14 +1,14 @@
 <template>
   <a-upload
+    v-model:file-list="fileList"
     :custom-request="customRequest"
-    :default-file-list="fileList"
     :limit="limit"
     action="/"
   />
 </template>
 
 <script>
-import { computed, ref, toRef } from 'vue'
+import { computed, toRef } from 'vue'
 import { upload } from '@/api/upload'
 export default {
   name: 'FileUpload',
@@ -25,39 +25,45 @@ export default {
   emits: ['update:modelValue'],
   setup(props, context) {
     const value = toRef(props, 'modelValue')
+    const fileList = computed({
+      get: () => {
+        if (value.value) {
+          const data = Array.isArray(value.value) ? value.value : [value.value]
+          return data.map((e, index) => ({
+            uid: index + '',
+            name: e.docName,
+            path: '/api/files?path=' + e.docPath
+          }))
+        }
+        return []
+      },
 
-    const fileList = computed(() => {
-      if (value.value) {
-        const data = Array.isArray(value.value) ? value.value : [value.value]
-        return data.map((e, index) => ({
-          uid: index + '',
-          name: e.docName,
-          path: '/api/files?path=' + e.docPath
-        }))
+      set: (newVal) => {
+        if (newVal.length === 0) {
+          context.emit('update:modelValue', null)
+          return
+        }
+
+        if (props.limit === 1) {
+          context.emit('update:modelValue', newVal[0].doc)
+        } else {
+          context.emit(
+            'update:modelValue',
+            newVal.map((e) => e.doc).filter((e) => e || false)
+          )
+        }
       }
-      return []
     })
-
-    const files = ref(value.value)
 
     const customRequest = (option) => {
       const { onError, onSuccess, fileItem } = option
-
       upload(fileItem.file)
         .then((res) => {
           const { data } = res
-          const doc = {
+          fileItem.doc = {
             docName: data.rawFileName,
             docPath: data.path
           }
-
-          if (props.limit === 1) {
-            context.emit('update:modelValue', doc)
-          } else {
-            files.value.push(doc)
-            context.emit('update:modelValue', files)
-          }
-
           onSuccess()
         })
         .catch((err) => {
