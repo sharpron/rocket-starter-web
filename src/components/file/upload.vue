@@ -1,14 +1,15 @@
 <template>
   <a-upload
-    v-model:file-list="fileList"
+    :file-list="fileList"
     :custom-request="customRequest"
     :limit="limit"
     action="/"
+    @change="onChange"
   />
 </template>
 
 <script>
-import { computed, toRef } from 'vue'
+import { watch, ref } from 'vue'
 import { upload } from '@/api/upload'
 export default {
   name: 'FileUpload',
@@ -24,56 +25,61 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(props, context) {
-    const value = toRef(props, 'modelValue')
-    const fileList = computed({
-      get: () => {
-        if (value.value) {
-          const data = Array.isArray(value.value) ? value.value : [value.value]
-          return data.map((e, index) => ({
+    const fileList = ref([])
+
+    watch(
+      () => props.modelValue,
+      (val) => {
+        if (val) {
+          const data = Array.isArray(val) ? val : [val]
+          fileList.value = data.map((e, index) => ({
             uid: index + '',
             name: e.docName,
-            path: '/api/files?path=' + e.docPath
+            url: baseUrl + 'api/files?path=' + e.docPath,
+            response: e,
+            status: 'done'
           }))
-        }
-        return []
-      },
-
-      set: (newVal) => {
-        if (newVal.length === 0) {
-          context.emit('update:modelValue', null)
-          return
-        }
-
-        if (props.limit === 1) {
-          context.emit('update:modelValue', newVal[0].doc)
         } else {
-          context.emit(
-            'update:modelValue',
-            newVal.map((e) => e.doc).filter((e) => e || false)
-          )
+          fileList.value = []
         }
-      }
-    })
+      },
+      { immediate: true }
+    )
 
     const customRequest = (option) => {
       const { onError, onSuccess, fileItem } = option
       upload(fileItem.file)
         .then((res) => {
-          const { data } = res
-          fileItem.doc = {
-            docName: data.rawFileName,
-            docPath: data.path
-          }
-          onSuccess()
+          const { rawFileName, path } = res.data
+          onSuccess({
+            docName: rawFileName,
+            docPath: path
+          })
         })
         .catch((err) => {
           onError(err)
         })
     }
 
+    const onChange = (newVal) => {
+      if (newVal.length === 0) {
+        context.emit('update:modelValue', null)
+      } else if (newVal.every((e) => e.status === 'done')) {
+        if (props.limit === 1) {
+          context.emit('update:modelValue', newVal[0].response)
+        } else {
+          context.emit(
+            'update:modelValue',
+            newVal.map((e) => e.response)
+          )
+        }
+      }
+    }
+
     return {
       customRequest,
-      fileList
+      fileList,
+      onChange
     }
   }
 }
