@@ -324,7 +324,8 @@ export default {
 
 <style scoped lang="less">
 .header {
-  background: url(../../assets/images/user-bg.jpg) no-repeat;
+  background: url(../../assets/images/user-bg.jpg) no-repeat center center;
+  background-size: 100% 100%;
 }
 
 .user-msg {
